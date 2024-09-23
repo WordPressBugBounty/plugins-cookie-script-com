@@ -1,0 +1,137 @@
+# Blank WordPress Pot
+# Copyright 2014 ...
+# This file is distributed under the GNU General Public License v3 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: CookieScript\n"
+"Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
+"POT-Creation-Date: 2018-08-21 13:29+0300\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: Cookie-Script.com\n"
+"Language: lt_LT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && (n%100<11 || n%100>19) ? 0 : n"
+"%10>=2 && n%10<=9 && (n%100<11 || n%100>19) ? 1 : 2);\n"
+"X-Textdomain-Support: yesX-Generator: Poedit 1.6.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;esc_html_e;esc_html_x:1,2c;esc_html__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
+"_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 2.1.1\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: cookie-script.php:89 cookie-script.php:105
+msgid "Cookie Script Settings 🍪"
+msgstr "Cookie Script Nustatymai 🍪"
+
+#: cookie-script.php:90
+msgid "Cookie-Script.com"
+msgstr "Cookie-Script.com"
+
+#: cookie-script.php:109
+msgid "Item ID"
+msgstr "Elemento ID"
+
+#: cookie-script.php:122
+msgid ""
+"You can get your Item ID in your account on Cookie-Script.com. Item ID is "
+"located below the name of each item on the account page."
+msgstr ""
+"Elemento ID galite rasti prisijungus prie savo Cookie-Script.com paskyros, "
+"visų elementų sąraše, po riekiamo elemento domenu."
+
+#: cookie-script.php:128
+msgid "HTTP"
+msgstr "HTTP"
+
+#: cookie-script.php:139
+msgid "HTTPS"
+msgstr "HTTPS"
+
+#: cookie-script.php:150
+msgid "HTTPS + Geo Targeting (EU)"
+msgstr "HTTPS + Geo Taikymas (ES)"
+
+#: cookie-script.php:162
+msgid "Save 👌"
+msgstr "Išsaugoti 👌"
+
+#: cookie-script.php:168
+msgid "Hello there!"
+msgstr "Sveiki!"
+
+#: cookie-script.php:171
+#, php-format
+msgid "In order to block third-party cookies you still have to make %1$s."
+msgstr ""
+"Tam, kad užblokuoti trečiųjų šalių slapukus Jūs vis tiek turite padaryti "
+"%1$s."
+
+#: cookie-script.php:175
+msgid "these changes"
+msgstr "šituos pakeitimus"
+
+#: cookie-script.php:181
+#, php-format
+msgid "For more manuals feel free to check our %1$s."
+msgstr "Daugiau pagalbinių straipsnių galite rasti %1$s."
+
+#: cookie-script.php:185
+msgid "manuals section"
+msgstr "čia"
+
+#: cookie-script.php:191
+#, php-format
+msgid "For more help and support feel free to contact by email %1$s."
+msgstr ""
+"Iškilus klausimams arba dėl platesnės pagalbos teiraukitės el. paštu %1$s."
+
+#: cookie-script.php:226
+msgid "Item not found."
+msgstr "Elementas nerastas."
+
+#: cookie-script.php:228
+#, php-format
+msgid ""
+"HTTPS item with this ID is not found. Make sure you have paid membership on "
+"Cookie-Script.com. You can get it %1$s."
+msgstr ""
+"HTTPS elementas su nurodytu ID nerastas. Prašome įsitikinkite jog "
+"priklausote vienai iš mokamų Cookie-Script.com narysčių. Ją įsigyti galite "
+"%1$s."
+
+#: cookie-script.php:232 cookie-script.php:240
+msgid "here"
+msgstr "čia"
+
+#: cookie-script.php:236
+#, php-format
+msgid ""
+"HTTPS + GEO Targeting item with this ID is not found. Make sure you have "
+"paid membership on Cookie-Script.com. You can get it %1$s."
+msgstr ""
+"HTTPS + Geo Taikymo elementas su nurodytu ID nerastas. Prašome įsitikinkite "
+"jog priklausote vienai iš mokamų Cookie-Script.com narysčių. Ją įsigyti "
+"galite %1$s."
+
+#: cookie-script.php:243
+msgid "Item found."
+msgstr "Elementas rastas."
+
+#: cookie-script.php:300
+msgid "Settings"
+msgstr "Nustatymai"
+
+#~ msgid ""
+#~ "You can find your \"Item ID\" by pressing \"Use Item\" button inside your "
+#~ "account page at Cookie-Script.com next to item you want to use."
+#~ msgstr ""
+#~ "Jūs galite rasti reikiamo elemento ID paspaudę \"Use Item\" mygtuką Jūsų "
+#~ "Cookie-Script.com paskyroje ties elemento kurį norite panaudoti."
+
+#~ msgid "Unfortunately free membership does not support this feature."
+#~ msgstr "Deja ši funkcija nemokamoje paskyroje nepalaikoma."
