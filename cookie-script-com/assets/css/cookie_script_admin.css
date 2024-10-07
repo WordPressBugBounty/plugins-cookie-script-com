@@ -373,7 +373,7 @@ label[for="cookie_script_item_src"] {
 
 #CookieScript-message {
     position: absolute;
-    bottom: -16px;
+    bottom: -5px;
     left: 0;
     font-size: 10px;
     width: 300%;
@@ -574,7 +574,7 @@ input[type=radio]:checked::before {
 
 #google-consent-settings .form-group select,
 #google-consent-settings .form-group input {
-    min-width: 104px;
+    min-width: 97px;
 }
 
 #google-consent-settings .form-group .control-label {

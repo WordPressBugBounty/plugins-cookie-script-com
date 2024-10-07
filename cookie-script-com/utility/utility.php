@@ -215,7 +215,6 @@ class Utility
         $imageUrls = self::getImageUrls();
 
         $cookiesExist = [];
-        $cookiesArrayExist = [];
         $cookies = $this->cookies;
 
         if ($cookies === false || $cookies === "" || empty($cookies)) {
@@ -267,16 +266,10 @@ class Utility
                     <?php
 
                     foreach ($cookies as $cookie) {
-	                    $cookiesArrayExist[] = $cookie["cookies"];
-
-                        if (!isset($cookie["cookies"])) {
-                            continue;
-                        }
-
-                        $cookiesExist[] = $cookie["cookies"] ;
+                        $cookiesExist = $cookie["cookies"];
                     }
 
-                    if (count($cookiesArrayExist) > 0) {
+                    if ((count($cookies) > 0)) {
                         ?>
                         <div class="activation-banner-wrapper">
                             <h4 class="cookiescript__subtitle">
@@ -322,7 +315,7 @@ class Utility
                         </div>
                         <?php
                     }
-                    if (count($cookiesExist) > 0) {
+                    if (($cookies !== [] && $cookies !== "") && !is_null($cookiesExist)) {
                         ?>
                         <h4 class="cookiescript__subtitle">Your Cookie Declaration report:</h4>
                         <table class="CookieScript__report-table">
@@ -509,19 +502,18 @@ class Utility
             <div class="google-consent-mode-values-wrapper">
                 <div class="google-consent-mode-values">
                     <?php
-                        $globalSettings = $consentModeSettings['global'] ?? [];
-
-                        $this->render_google_consent_select('global', 'ad_storage', 'Advertisement Cookies', $globalSettings["ad_storage"] ?? "denied");
-                        $this->render_google_consent_select('global', 'analytics_storage', 'Analytics Cookies', $globalSettings["analytics_storage"] ?? "denied");
-                        $this->render_google_consent_select('global', 'ad_user_data', 'Advertisement User Data', $globalSettings["ad_user_data"] ?? "denied");
-                        $this->render_google_consent_select('global', 'ad_personalization', 'Advertisement Personalization', $globalSettings["ad_personalization"] ?? "denied");
+                    $globalSettings = $consentModeSettings['global'] ?? [];
+                    $this->render_google_consent_select('global', 'ad_storage', 'Advertisement Cookies', $globalSettings["ad_storage"] ?? null);
+                    $this->render_google_consent_select('global', 'analytics_storage', 'Analytics Cookies', $globalSettings["analytics_storage"] ?? null);
+                    $this->render_google_consent_select('global', 'ad_user_data', 'Advertisement User Data', $globalSettings["ad_user_data"] ?? null);
+                    $this->render_google_consent_select('global', 'ad_personalization', 'Advertisement Personalization', $globalSettings["ad_personalization"] ?? null);
                     ?>
                 </div>
                 <div class="google-consent-mode-values">
                     <?php
-                        $this->render_google_consent_select('global', 'functionality_storage', 'Functional Cookies', $globalSettings["functionality_storage"] ?? "denied");
-                        $this->render_google_consent_select('global', 'personalization_storage', 'Personalization Cookies', $globalSettings["personalization_storage"] ?? "denied");
-                        $this->render_google_consent_select('global', 'security_storage', 'Security Cookies', $globalSettings["security_storage"] ?? "denied");
+                    $this->render_google_consent_select('global', 'functionality_storage', 'Functional Cookies', $globalSettings["functionality_storage"] ?? null);
+                    $this->render_google_consent_select('global', 'personalization_storage', 'Personalization Cookies', $globalSettings["personalization_storage"] ?? null);
+                    $this->render_google_consent_select('global', 'security_storage', 'Security Cookies', $globalSettings["security_storage"] ?? null);
                     ?>
                     <div class="form-group">
                         <label class="control-label col-lg-4"><?php esc_html_e('Wait for update', 'CookieScript'); ?></label>
@@ -581,19 +573,15 @@ class Utility
                                        value="<?php echo $region["region_code"]; ?>" size="5"/>
                             </div>
                         </div>
-	                    <?php
-                            $this->render_google_consent_select( "regional", "ad_storage", 'Advertisement Cookies', $region["ad_storage"], $index );
-                            $this->render_google_consent_select( "regional", "analytics_storage", 'Analytics Cookies', $region["analytics_storage"], $index );
-                            $this->render_google_consent_select( "regional", "ad_user_data", 'Advertisement User Data', $region["ad_user_data"], $index );
-                            $this->render_google_consent_select( "regional", "ad_personalization", 'Advertisement Personalization', $region["ad_personalization"], $index );
-	                    ?>
+                        <?php $this->render_google_consent_select("regional", "ad_storage", 'Advertisement Cookies', $region["ad_storage"], $index); ?>
+                        <?php $this->render_google_consent_select("regional", "analytics_storage", 'Analytics Cookies', $region["analytics_storage"], $index); ?>
+                        <?php $this->render_google_consent_select("regional", "ad_user_data", 'Advertisement User Data', $region["ad_user_data"], $index); ?>
+                        <?php $this->render_google_consent_select("regional", "ad_personalization", 'Advertisement Personalization', $region["ad_personalization"], $index); ?>
                     </div>
                     <div class="google-consent-mode-values">
-                        <?php
-                            $this->render_google_consent_select("regional", "functionality_storage", 'Functional Cookies', $region["functionality_storage"], $index);
-                            $this->render_google_consent_select("regional", "personalization_storage", 'Personalization Cookies', $region["personalization_storage"], $index);
-                            $this->render_google_consent_select("regional", "security_storage", 'Security Cookies', $region["security_storage"], $index);
-                        ?>
+                        <?php $this->render_google_consent_select("regional", "functionality_storage", 'Functional Cookies', $region["functionality_storage"], $index); ?>
+                        <?php $this->render_google_consent_select("regional", "personalization_storage", 'Personalization Cookies', $region["personalization_storage"], $index); ?>
+                        <?php $this->render_google_consent_select("regional", "security_storage", 'Security Cookies', $region["security_storage"], $index); ?>
                         <div class="form-group">
                             <label class="control-label col-lg-4"><?php esc_html_e('Wait for update', 'CookieScript'); ?></label>
                             <div class="col-lg-2">
@@ -617,14 +605,6 @@ class Utility
 
         return true;
     }
-
-	public function validate_positive_integer($value) {
-		if (is_numeric($value) && is_int(0 + $value) && $value > 0) {
-			return true;
-		}
-
-		return false;
-	}
 
     public function display_google_consent_script_front($consentModeSettings)
     {

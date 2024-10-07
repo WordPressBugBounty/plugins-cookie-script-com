@@ -3,7 +3,7 @@ Contributors: cookiescriptcom
 Tags: gdpr, cookie, compliance, cookiescript, consent
 Requires at least: 4.9
 Tested up to: 6.5.5
-Stable tag: 1.1.4
+Stable tag: 1.1.3
 Requires PHP: 7.0
 License: MIT License (Expat)
 License URI: https://tldrlegal.com/license/mit-license
@@ -34,7 +34,6 @@ To block third-party cookies you might still have to make these changes:
 1. Cookie-Script.com plugin settings page
 
 == Changelog ==
-1.1.4 - Tested on a WordPress 6.6.2 version. Works as intended.
 1.1.3 - Tested on a WordPress 6.5.5 version. Works as intended.
 1.1.2 - Tested on a WordPress 6.5.4 version. Works as intended.
 1.1.1 - Tested on a WordPress 6.5.4 version. Works as intended.

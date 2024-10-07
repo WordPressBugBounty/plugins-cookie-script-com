@@ -1,7 +1,7 @@
 (function () {
 	jQuery(document).ready(function ( $ ) {
-		const minSrcLength = 59
 
+		const minSrcLength = 59
 		let that,
 				url,
 				itemId = $("#cookie_script_item_id").val(),
@@ -55,16 +55,14 @@ jQuery(document).ready(function ( $ ) {
 		}, 3000)
 	}
 
-	function finishedScanning(shouldReload) {
+	function finishedScanning( shouldReload ) {
 		if (getCookie("isScanning") === "") {
 			$("#cookie_script_user_web").attr("disabled", false)
 			openModalButton.css("display", "inline-block")
 			$("#scanning-website").css("display", "none")
 
 			if (shouldReload) {
-				setTimeout(function () {
-					location.reload()
-				}, 2000)
+				location.reload()
 			}
 		}
 	}
@@ -116,7 +114,7 @@ jQuery(document).ready(function ( $ ) {
 				url: url,
 				language: language,
 			},
-			success: function (r) {
+			success: function () {
 				checkScanStatus()
 			},
 			error: function ( jqXHR, textStatus, errorThrown ) {
@@ -371,6 +369,11 @@ jQuery(document).ready(function ( $ ) {
     `;
 		accordion.append(newRegionHtml);
 	}
+
+	window.removeRegion = function (button) {
+		$(button).closest(".regional-setting").remove();
+	}
+
 
 	window.removeRegion = function (button) {
 		$(button).closest(".regional-setting").remove();
