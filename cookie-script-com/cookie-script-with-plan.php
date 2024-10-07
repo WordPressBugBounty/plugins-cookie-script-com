@@ -10,14 +10,17 @@ require_once plugin_dir_path(__FILE__) . "index.php";
 
 class CookieScriptWithPlan extends Utility
 {
+    public $src;
+    public $script_location;
+    public $script_location_in_element;
+    public $bannerWithAccountAdded;
+
     public function __construct()
     {
         $this->src = esc_attr(get_option("cookie_script_item_src"));
         $this->script_location = esc_attr(get_option("cookie_script_location"));
         $this->script_location_in_element = esc_attr(get_option("cookie_script_location_in_element"));
         $this->bannerWithAccountAdded = (bool) get_option("cookie_script_with_plan_script_added");
-        $this->isGoogleConsentModeActivated = (bool) get_option("cookie_script_google_consent_mode_enabled");
-        $this->timestamp = esc_attr(get_option("cookie_script_with_plan_timestamp"));
 
         add_action("admin_enqueue_scripts", function() {
             if (isset($_GET['page']) && in_array($_GET['page'], ["cookie-script-with-account", "cookie-script", "cookie-script-home","cookie-script-without-account"])) {
@@ -65,14 +68,6 @@ class CookieScriptWithPlan extends Utility
         wp_enqueue_style(
             "cookie_script_admin",
             plugin_dir_url(__FILE__) . "assets/css/cookie_script_admin.css"
-        );
-
-        wp_enqueue_script(
-            "cookie_script_admin_js",
-            plugin_dir_url(__FILE__) . "assets/js/cookie_script_admin.js",
-            array('jquery'),
-            null,
-            true
         );
     }
 
@@ -177,6 +172,11 @@ class CookieScriptWithPlan extends Utility
                 $langRegexPattern = '/(?i)^\s*([a-z]{2}(-[a-z0-9]{1,3})?\s*)(,\s*[a-z]{2}(-[a-z0-9]{1,3})?\s*)*$/i';
 
                 foreach ($_POST["consent_settings"]["regional"] as $lang) {
+	                if (isset($lang["region_code"]) && !$this->validate_positive_integer($lang["wait_for_update"])) {
+		                $this->flashMessage("Invalid integer detected: {$lang["wait_for_update"]}, it must be positive or full number. No changes were saved.", "error", "flash-message__error");
+		                return;
+	                }
+
                     if (isset($lang["region_code"]) && !$this->string_validation($lang["region_code"], $langRegexPattern)) {
                         $this->flashMessage("Invalid language code detected: {$lang["region_code"]}. No changes were saved.", "error", "flash-message__error");
                         return;
@@ -184,7 +184,13 @@ class CookieScriptWithPlan extends Utility
                 }
             }
 
-            $scriptRegexPattern = '/^https:\/\/(cdn|eu|ca|ca-eu|geo)\.cookie-script\.com\/s\/[0-9a-f]{32}\.js([\?&](region|country|state)=[a-z\-]*)*$/i';
+	        $scriptRegexPattern = '/^https:\/\/(cdn|eu|ca|ca-eu|geo)\.cookie-script\.com\/s\/[0-9a-f]{32}\.js([\?&](region|country|state)=[a-z\-]*)*$/i';
+	        $waitForUpdateGlobalSetting = $_POST["consent_settings"]["global"]["wait_for_update"];
+
+	        if (!$this->validate_positive_integer($waitForUpdateGlobalSetting)) {
+		        $this->flashMessage("Invalid integer detected: {$waitForUpdateGlobalSetting}, it must be positive or full number. No changes were saved.", "error", "flash-message__error");
+		        return;
+	        }
 
             if (isset($_POST["cookie_script_item_src"]) && !$this->string_validation($_POST["cookie_script_item_src"], $scriptRegexPattern)) {
                 $this->flashMessage("Invalid script detected: {$_POST["cookie_script_item_src"]}. No changes were saved.", "error", "flash-message__error");
