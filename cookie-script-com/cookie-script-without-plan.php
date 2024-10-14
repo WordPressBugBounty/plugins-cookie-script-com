@@ -233,8 +233,7 @@ class CookieScriptWithoutPlan extends Utility
 
         $body = [
             "wp_id" => $this->secret,
-//            "url" => get_site_url(),
-            "url" => "https://cto2b.eu",
+            "url" => get_site_url(),
             "privacy_policy_url" => $cookieScriptPolicyUrl ?: null,
             "lang" => $cookieScriptSelectedLanguage ?: null,
         ];
