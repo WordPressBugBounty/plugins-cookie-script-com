@@ -6,7 +6,7 @@ class Cswpca
         add_action("admin_init", array($this, "cookie_script_register_settings"));
     }
 
-    public function cookie_script_wp_consent_html($showSaveButton = false)
+    public function cookie_script_wp_consent_html($showSaveButton = false, $imageUrls)
     {
         $saved = get_option('cookie_script_wp_init_consent', []);
 
@@ -67,7 +67,7 @@ class Cswpca
             echo '
         <div class="panel-footer">
             <button type="submit" name="submit" class="CookieScript__button-success">
-                <img src="http://localhost/wordpress/wp-content/plugins/cookie-script-com/utility/../assets/img/save-icon.svg"
+                <img src="' . $imageUrls["save-icon.svg"] . '"
                      alt="Save Icon">
                 Save settings
             </button>

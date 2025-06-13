@@ -574,7 +574,7 @@ class Utility
                 if (is_plugin_active('wp-consent-api/wp-consent-api.php')) {
                     echo '<p>' . esc_html__('The WP Consent API plugin is active. CookieScript will automatically synchronize consent preferences with it.', 'CookieScript') . '</p>';
                     $cswpca = new cswpca();
-                    $cswpca->cookie_script_wp_consent_html($displaySaveButton);
+                    $cswpca->cookie_script_wp_consent_html($displaySaveButton, $imageUrls);
                 } else {
                     echo '<p>' . esc_html__('The WP Consent API plugin is not installed or activated. To enable integration, please install and activate it.', 'CookieScript') . ' <a href="https://help.cookie-script.com/en/integration-with-other-systems/cookie-compliance-integration-for-wordpress-and-woocommerce" target="_blank">' . esc_html__('Learn more', 'CookieScript') . '</a>.</p>';
                 }
