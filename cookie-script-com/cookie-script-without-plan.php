@@ -1,6 +1,7 @@
 <?php
 
 require_once plugin_dir_path(__FILE__) . "utility/utility.php";
+require_once plugin_dir_path(__FILE__) . "utility/cswpca.php";
 
 class CookieScriptWithoutPlan extends Utility
 {
@@ -355,12 +356,17 @@ class CookieScriptWithoutPlan extends Utility
                 $this->display_google_consent_script_front($consentModeSettings);
             }
 
-            echo "<script type='text/javascript' charset='UTF-8' data-cs-platform='wordpress' src='" . $script . '?' . $this->timestamp . "' id='cookie_script-js-without'></script>";
+            if (!$this->is_preview()) {
+                echo "<script type='text/javascript' charset='UTF-8' data-cs-platform='wordpress' src='" . $script . '?' . $this->timestamp . "' id='cookie_script-js-without'></script>";
+            }
         }
     }
 
     public function cookie_script_save_options() {
 	    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["cs_without_plan_setting_save"])) {
+            $wpc = new Cswpca();
+            $wpc->cookie_script_save_wpc();
+
             if (isset($_POST["consent_settings"]["regional"]) && is_array($_POST["consent_settings"]["regional"])) {
                 $langRegexPattern = '/(?i)^\s*([a-z]{2}(-[a-z0-9]{1,3})?\s*)(,\s*[a-z]{2}(-[a-z0-9]{1,3})?\s*)*$/i';
 

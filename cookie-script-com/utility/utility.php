@@ -1,5 +1,7 @@
 <?php
 
+require_once plugin_dir_path(__FILE__) . "cswpca.php";
+
 class Utility
 {
     private static $imagePath;
@@ -487,74 +489,100 @@ class Utility
         $imageUrls = self::getImageUrls();
 
         ?>
-        <div class="form-group enable-consent-mode">
-            <div>
-                <input type="hidden" name="enable_google_consent_mode" value="0"/>
-                <input type="checkbox" name="enable_google_consent_mode"
-                       id="enable_google_consent_mode" <?php echo get_option("cookie_script_google_consent_mode_enabled") ? "checked" : "" ?>>
-                <label for="enable_google_consent_mode"><?php esc_html_e('Enable Google Consent Mode', 'CookieScript'); ?></label>
-            </div>
-            <div>
-                <?php if ($displaySaveButton) { ?>
-                    <button id="top-gtm-save-button" type="submit" name="submit"
-                            class="CookieScript__button-success">
-                        <img src="<?php echo $imageUrls["save-icon.svg"];?> " alt="Save Icon">
-                        Save settings
+        <div class="tabs">
+            <ul class="tab-list" role="tablist">
+                <li role="presentation">
+                    <button type="button" id="tab-1-btn" role="tab" aria-controls="tab-1" aria-selected="true">
+                        Google Consent Mode
                     </button>
-                <?php } ?>
-            </div>
-        </div>
-        <div id="google-consent-settings" <?php if (!get_option("cookie_script_google_consent_mode_enabled")) echo 'style="display:none"'; ?>>
-            <h4 class="google-consent-mode-header"><?php esc_html_e('Global Settings', 'CookieScript'); ?></h4>
-            <div class="google-consent-mode-values-wrapper">
-                <div class="google-consent-mode-values">
-                    <?php
-                        $globalSettings = $consentModeSettings['global'] ?? [];
-
-                        $this->render_google_consent_select('global', 'ad_storage', 'Advertisement Cookies', $globalSettings["ad_storage"] ?? "denied");
-                        $this->render_google_consent_select('global', 'analytics_storage', 'Analytics Cookies', $globalSettings["analytics_storage"] ?? "denied");
-                        $this->render_google_consent_select('global', 'ad_user_data', 'Advertisement User Data', $globalSettings["ad_user_data"] ?? "denied");
-                        $this->render_google_consent_select('global', 'ad_personalization', 'Advertisement Personalization', $globalSettings["ad_personalization"] ?? "denied");
-                    ?>
+                </li>
+                <li role="presentation">
+                    <button type="button" id="tab-2-btn" role="tab" aria-controls="tab-2" aria-selected="false">
+                        WordPress Consent API
+                    </button>
+                </li>
+            </ul>
+            <div id="tab-1" class="tab-panel" role="tabpanel" aria-labelledby="tab-1-btn">
+                <div class="form-group enable-consent-mode">
+                    <div>
+                        <input type="hidden" name="enable_google_consent_mode" value="0"/>
+                        <input type="checkbox" name="enable_google_consent_mode"
+                               id="enable_google_consent_mode" <?php echo get_option("cookie_script_google_consent_mode_enabled") ? "checked" : "" ?>>
+                        <label for="enable_google_consent_mode"><?php esc_html_e('Enable Google Consent Mode', 'CookieScript'); ?></label>
+                    </div>
+                    <div>
+                        <?php if ($displaySaveButton) { ?>
+                            <button id="top-gtm-save-button" type="submit" name="submit"
+                                    class="CookieScript__button-success">
+                                <img src="<?php echo $imageUrls["save-icon.svg"]; ?> " alt="Save Icon">
+                                Save settings
+                            </button>
+                        <?php } ?>
+                    </div>
                 </div>
-                <div class="google-consent-mode-values">
-                    <?php
-                        $this->render_google_consent_select('global', 'functionality_storage', 'Functional Cookies', $globalSettings["functionality_storage"] ?? "denied");
-                        $this->render_google_consent_select('global', 'personalization_storage', 'Personalization Cookies', $globalSettings["personalization_storage"] ?? "denied");
-                        $this->render_google_consent_select('global', 'security_storage', 'Security Cookies', $globalSettings["security_storage"] ?? "denied");
-                    ?>
-                    <div class="form-group">
-                        <label class="control-label col-lg-4"><?php esc_html_e('Wait for update', 'CookieScript'); ?></label>
-                        <div class="col-lg-2">
-                            <input onchange="inputWfuValidation(this)" type="text"
-                                   name="consent_settings[global][wait_for_update]"
-                                   value="<?php echo esc_attr($globalSettings['wait_for_update'] ?? '500'); ?>"
-                                   size="5"/>
+                <div id="cs-settings" <?php if (!get_option("cookie_script_google_consent_mode_enabled")) echo 'style="display:none"'; ?>>
+                    <h4 class="cs-settings"><?php esc_html_e('Global Settings', 'CookieScript'); ?></h4>
+                    <div class="cs-settings-values-wrapper">
+                        <div class="cs-settings-values">
+                            <?php
+                            $globalSettings = $consentModeSettings['global'] ?? [];
+
+                            $this->render_google_consent_select('global', 'ad_storage', 'Advertisement Cookies', $globalSettings["ad_storage"] ?? "denied");
+                            $this->render_google_consent_select('global', 'analytics_storage', 'Analytics Cookies', $globalSettings["analytics_storage"] ?? "denied");
+                            $this->render_google_consent_select('global', 'ad_user_data', 'Advertisement User Data', $globalSettings["ad_user_data"] ?? "denied");
+                            $this->render_google_consent_select('global', 'ad_personalization', 'Advertisement Personalization', $globalSettings["ad_personalization"] ?? "denied");
+                            ?>
                         </div>
+                        <div class="cs-settings-values">
+                            <?php
+                            $this->render_google_consent_select('global', 'functionality_storage', 'Functional Cookies', $globalSettings["functionality_storage"] ?? "denied");
+                            $this->render_google_consent_select('global', 'personalization_storage', 'Personalization Cookies', $globalSettings["personalization_storage"] ?? "denied");
+                            $this->render_google_consent_select('global', 'security_storage', 'Security Cookies', $globalSettings["security_storage"] ?? "denied");
+                            ?>
+                            <div class="form-group">
+                                <label class="control-label col-lg-4"><?php esc_html_e('Wait for update', 'CookieScript'); ?></label>
+                                <div class="col-lg-2">
+                                    <input onchange="inputWfuValidation(this)" type="text"
+                                           name="consent_settings[global][wait_for_update]"
+                                           value="<?php echo esc_attr($globalSettings['wait_for_update'] ?? '500'); ?>"
+                                           size="5"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="cs-settings-header"><?php esc_html_e('Regional Settings', 'CookieScript'); ?></h4>
+                    <div id="accordion">
+                        <?php $this->render_regional_settings(); ?>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="CookieScript__button-secondary" type="button" id="add-region"
+                                onclick="addRegion()">
+                            <img src="<?php echo $imageUrls["add-icon.svg"]; ?>" alt="Add Icon">
+                            <?php esc_html_e('Add new region', 'CookieScript'); ?>
+                        </button>
+                        <?php if ($displaySaveButton) { ?>
+                            <button type="submit" name="submit" class="CookieScript__button-success">
+                                <img src="<?php echo $imageUrls["save-icon.svg"]; ?>" alt="Save Icon">
+                                Save settings
+                            </button>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
-            <h4 class="google-consent-mode-header"><?php esc_html_e('Regional Settings', 'CookieScript'); ?></h4>
-            <div id="accordion">
-                <?php $this->render_regional_settings(); ?>
-            </div>
-            <div class="panel-footer">
-                <button class="CookieScript__button-secondary" type="button" id="add-region"
-                        onclick="addRegion()">
-                    <img src="<?php echo $imageUrls["add-icon.svg"]; ?>" alt="Add Icon">
-                    <?php esc_html_e('Add new region', 'CookieScript'); ?>
-                </button>
-                <?php if ($displaySaveButton) { ?>
-                    <button type="submit" name="submit" class="CookieScript__button-success">
-                        <img src="<?php echo $imageUrls["save-icon.svg"]; ?>" alt="Save Icon">
-                        Save settings
-                    </button>
-                <?php } ?>
+            <div id="tab-2" class="tab-panel" role="tabpanel" aria-labelledby="tab-2-btn" >
+                <?php
+                if (is_plugin_active('wp-consent-api/wp-consent-api.php')) {
+                    echo '<p>' . esc_html__('The WP Consent API plugin is active. CookieScript will automatically synchronize consent preferences with it.', 'CookieScript') . '</p>';
+                    $cswpca = new cswpca();
+                    $cswpca->cookie_script_wp_consent_html($displaySaveButton);
+                } else {
+                    echo '<p>' . esc_html__('The WP Consent API plugin is not installed or activated. To enable integration, please install and activate it.', 'CookieScript') . ' <a href="https://help.cookie-script.com/en/integration-with-other-systems/cookie-compliance-integration-for-wordpress-and-woocommerce" target="_blank">' . esc_html__('Learn more', 'CookieScript') . '</a>.</p>';
+                }
+                ?>
             </div>
         </div>
         <?php
     }
-
 
     private function render_region($index, $region)
     {
@@ -571,8 +599,8 @@ class Utility
                 </button>
             </div>
             <div class="gcm-setting form-wrapper">
-                <div class="google-consent-mode-values-wrapper">
-                    <div class="google-consent-mode-values">
+                <div class="cs-settings-values-wrapper">
+                    <div class="cs-settings-values">
                         <div class="form-group">
                             <label class="control-label col-lg-4"><?php esc_html_e('Region Code', 'CookieScript'); ?></label>
                             <div class="col-lg-2">
@@ -588,7 +616,7 @@ class Utility
                             $this->render_google_consent_select( "regional", "ad_personalization", 'Advertisement Personalization', $region["ad_personalization"], $index );
 	                    ?>
                     </div>
-                    <div class="google-consent-mode-values">
+                    <div class="cs-settings-values">
                         <?php
                             $this->render_google_consent_select("regional", "functionality_storage", 'Functional Cookies', $region["functionality_storage"], $index);
                             $this->render_google_consent_select("regional", "personalization_storage", 'Personalization Cookies', $region["personalization_storage"], $index);
@@ -701,5 +729,10 @@ class Utility
                 $this->render_region($index, $region);
             }
         }
+    }
+
+    public function is_preview()
+    {
+        return isset($_GET['elementor-preview']) || $_SERVER['HTTP_SEC_FETCH_DEST'] === 'iframe';
     }
 }

@@ -100,7 +100,7 @@ aside b {
 #CookieScript h3 {
     font-size: 24px;
     font-weight: 700;
-    color: #23374d;
+    color: #31374A;
     margin: 14px 0;
     line-height: 36px;
 }
@@ -110,6 +110,10 @@ aside b {
     width: 11px;
     position: relative;
     margin-right: 3px;
+}
+
+.google-consent-mode-settings a {
+    text-decoration: none;
 }
 
 .CookieScript__adminForm input[name="cookie_script_item_id"] {
@@ -152,7 +156,7 @@ aside b {
 }
 
 .CookieScript__button-secondary {
-    background: #23374d;
+    background: #31374A;
 }
 
 .CookieScript__button-warning {
@@ -182,7 +186,7 @@ aside b {
     border: transparent;
     cursor: pointer;
     text-transform: uppercase;
-    color: #23374d;
+    color: #31374A;
     font-size: 12px;
 }
 
@@ -297,13 +301,13 @@ label[for="cookie_script_item_src"] {
 }
 
 .CookieScript__home h1 {
-    color: #23374d;
+    color: #31374A;
     font-weight: 600;
 }
 
 .CookieScript__home p {
     line-height: 23px;
-    color: #1d2327;
+    color: #31374A;
 }
 
 .CookieScript__flowers {
@@ -560,11 +564,11 @@ input[type=radio]:checked::before {
     color: #129fd5;
 }
 
-.google-consent-mode-values-wrapper {
+.cs-settings-values-wrapper {
     display: flex;
 }
 
-#google-consent-settings .form-group {
+#cs-settings .form-group {
     display: flex;
     align-items: center;
     margin-bottom: 12px;
@@ -572,12 +576,9 @@ input[type=radio]:checked::before {
     width: 100%;
 }
 
-#google-consent-settings .form-group select,
-#google-consent-settings .form-group input {
+#cs-settings .form-group select,
+#cs-settings .form-group input {
     min-width: 104px;
-}
-
-#google-consent-settings .form-group .control-label {
 }
 
 #save_gtm_settings_form {
@@ -599,18 +600,22 @@ input[type=radio]:checked::before {
     padding: 10px 0;
 }
 
-.google-consent-mode-values {
+.cs-settings-values {
     width: 100%;
 }
 
-.google-consent-mode-values-wrapper .google-consent-mode-values:first-of-type {
+.cs-settings-values-wrapper .cs-settings-values:first-of-type {
     border-right: 1px solid rgba(204, 204, 204, 0.33);
     padding-right: 24px;
     margin-right: 24px;
     width: 100%;
 }
 
-.google-consent-mode-header, .cookiescript__subtitle {
+.cs-settings-cswpca .cs-settings-values-wrapper .cs-settings-values:first-of-type {
+    border-right: none;
+}
+
+.cs-settings-header, .cookiescript__subtitle {
     font-weight: 700;
     font-size: 18px;
     margin-bottom: 18px;
@@ -654,6 +659,53 @@ li::marker {
     height: fit-content;
     font-family: Inter;
 }
+
+/*tabs start*/
+
+#CookieScript > *,
+.google-consent-mode-settings .tabs > * {
+    color: #31374A;
+}
+
+.tab-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tab-list button {
+    flex: 1;
+    padding: 10px 15px;
+    background: #fff;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-size: 22px;
+}
+
+.tab-list button[aria-selected="true"] {
+    border-color: #22b8f0;
+    color: #22b8f0;
+    background: #fff;
+    font-weight: bold;
+}
+
+.tab-panel {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    height: 0;
+    overflow: hidden;
+}
+
+.tab-panel.active {
+    opacity: 1;
+    visibility: visible;
+    height: auto;
+}
+
+/*tabs end*/
 
 /* Media queries */
 @media (max-width: 530px) {

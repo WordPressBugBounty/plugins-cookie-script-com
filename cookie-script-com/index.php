@@ -3,7 +3,7 @@
 
 # Plugin Name:       Cookie-Script.com
 # Description:       Cookie-Script.com WordPress plugin.
-# Version:           1.1.4
+# Version:           1.2.0
 # Author:            Cookie-Script.com
 # Author URI:        https://cookie-script.com/
 # Text Domain:       CookieScript
@@ -34,7 +34,29 @@ if (!class_exists("CookieScriptIndex")) {
             });
 
             $this->redirectLocation = esc_attr(get_option("cookie_script_redirect_location"));
+            add_action( 'wp_enqueue_scripts', array($this,'cookie_script_api_js'));
+            add_filter( 'wp_consent_api_registered_' . plugin_basename( __FILE__ ), '__return_true' );
         }
+
+
+        public function cookie_script_api_js() {
+            $consents = get_option('cookie_script_wp_init_consent', []);
+
+            wp_enqueue_script('wp-consent-api');
+
+            wp_enqueue_script(
+                'cookie_script_api',
+                plugin_dir_url(__FILE__) . 'assets/js/cookie_script_api.js',
+                array('wp-consent-api'),
+                '1.0.8',
+                true
+            );
+
+            wp_localize_script('cookie_script_api', 'wpConsentData', [
+                'consents' => $consents,
+            ]);
+        }
+
 
         public function cookie_script_home()
         {
@@ -101,6 +123,18 @@ if (!class_exists("CookieScriptIndex")) {
         static function cookie_script_deactivation()
         {
             wp_dequeue_script("cookie_script");
+
+            $cats = ['functional', 'statistics', 'marketing', 'preferences'];
+            foreach ($cats as $cat) {
+                setcookie(
+                    "wp_consent_" . $cat,
+                    "",
+                    time() - HOUR_IN_SECONDS,
+                    COOKIEPATH ?: "/",
+                    COOKIE_DOMAIN
+                );
+                unset($_COOKIE["wp_consent_" . $cat]);
+            }
         }
 
         public static function cookie_script_uninstall()
@@ -125,6 +159,7 @@ if (!class_exists("CookieScriptIndex")) {
             delete_option("cookie_script_current_plugin_version");
             delete_option("cookie_script_google_consent_mode_enabled");
             delete_option("cookie_script_google_consent_mode_settings");
+            delete_option("cookie_script_wp_init_consent");
 
             wp_dequeue_script("cookie_script");
             wp_deregister_script("cookie_script");
@@ -192,6 +227,7 @@ new PluginUpdater();
 
 // Make sure there is no cookie script in document while plugin is deactivated
 register_deactivation_hook(__FILE__, array($cookieScriptInstance, "cookie_script_deactivation"));
+
 // Clean up DB after uninstalling plugin
 register_uninstall_hook(__FILE__, array("CookieScriptIndex", "cookie_script_uninstall"));
 

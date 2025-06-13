@@ -252,7 +252,7 @@ jQuery(document).ready(function ( $ ) {
 	}
 
 	$("#enable_google_consent_mode").on("change", function () {
-		let consentSettings = $("#google-consent-settings");
+		let consentSettings = $("#cs-settings");
 		let saveButton = $("#top-gtm-save-button");
 
 		if (this.checked) {
@@ -285,8 +285,8 @@ jQuery(document).ready(function ( $ ) {
                 </button>
             </div>
             <div class="gcm-setting form-wrapper">
-                <div class="google-consent-mode-values-wrapper">
-                    <div class="google-consent-mode-values">
+                <div class="cs-settings-values-wrapper">
+                    <div class="cs-settings-values">
                         <div class="form-group">
                             <label class="control-label col-lg-4">Region Code</label>
                             <div class="col-lg-2">
@@ -330,7 +330,7 @@ jQuery(document).ready(function ( $ ) {
                             </div>
                         </div>
                     </div>
-                    <div class="google-consent-mode-values">
+                    <div class="cs-settings-values">
                         <div class="form-group">
                             <label class="control-label col-lg-4">Functional Cookies</label>
                             <div class="col-lg-2">
@@ -375,4 +375,25 @@ jQuery(document).ready(function ( $ ) {
 	window.removeRegion = function (button) {
 		$(button).closest(".regional-setting").remove();
 	}
+
+	function showPanel(panelId) {
+		$('.tab-panel.active')
+				.removeClass('active');
+		$('#' + panelId)
+				.addClass('active');
+	}
+
+	$('.tab-list button').on('click', function(e) {
+		e.preventDefault();
+		const panelId = $(this).attr('aria-controls');
+
+		$('.tab-list button')
+				.attr('aria-selected', 'false');
+		$(this)
+				.attr('aria-selected', 'true');
+
+		showPanel(panelId);
+	});
+
+	$('#tab-1-btn').trigger('click');
 })

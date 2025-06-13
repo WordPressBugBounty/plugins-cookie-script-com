@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) {
 }
 
 require_once plugin_dir_path(__FILE__) . "utility/utility.php";
+require_once plugin_dir_path(__FILE__) . "utility/cswpca.php";
 require_once plugin_dir_path(__FILE__) . "index.php";
 
 class CookieScriptWithPlan extends Utility
@@ -43,7 +44,9 @@ class CookieScriptWithPlan extends Utility
                 $this->display_google_consent_script_front($consentModeSettings);
             }
 
-            echo "<script type='text/javascript' charset='UTF-8' data-cs-platform='wordpress' src='" . $this->src . "' id='cookie_script-js-with'></script>";
+            if (!$this->is_preview()) {
+                echo "<script type='text/javascript' charset='UTF-8' data-cs-platform='wordpress' src='" . $this->src . "' id='cookie_script-js-with'></script>";
+            }
         }
     }
 
@@ -167,6 +170,8 @@ class CookieScriptWithPlan extends Utility
     private function cookie_script_save_options() {
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["cs_with_plan_setting-insert"])) {
             $googleConsentModeEnabled = $_POST["enable_google_consent_mode"];
+            $wpc = new Cswpca();
+            $wpc->cookie_script_save_wpc();
 
             if (isset($_POST["consent_settings"]["regional"]) && is_array($_POST["consent_settings"]["regional"])) {
                 $langRegexPattern = '/(?i)^\s*([a-z]{2}(-[a-z0-9]{1,3})?\s*)(,\s*[a-z]{2}(-[a-z0-9]{1,3})?\s*)*$/i';
