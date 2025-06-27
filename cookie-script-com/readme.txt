@@ -3,7 +3,7 @@ Contributors: cookiescriptcom
 Tags: gdpr, cookie, compliance, cookiescript, consent
 Requires at least: 4.9
 Tested up to: 6.8.1
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 Requires PHP: 7.0
 License: MIT License (Expat)
 License URI: https://tldrlegal.com/license/mit-license
@@ -11,29 +11,47 @@ License URI: https://tldrlegal.com/license/mit-license
 Cookie-Script.com WordPress plugin.
 
 == Description ==
-Cookie Script helps you to comply with European Cookie Law and GDPR. Make your own cookie information popup, no programming skills required. You can even use it for free.
+<strong>CookieScript</strong> helps your WordPress site meet privacy requirements like <strong>GDPR, CPRA, PIPEDA</strong> and more. It adds a cookie banner to your site—no need to edit files or write any code yourself.
+
+You can use it right after installing, <strong>even without a CookieScript account</strong>. Later on, if you want to adjust how the banner looks or behaves, you can link an account to unlock more options.
+
+The plugin works with <strong>Google Consent Mode v2</strong> and the <strong>WP Consent API</strong>, and can <strong>block third-party cookies</strong> until a visitor gives permission. It keeps your site compliant without interfering with tools like Google Analytics or ads.
+
+More details are available at <a href="https://cookie-script.com/" target="_blank">cookie-script.com</a>.
 
 == Frequently Asked Questions ==
-This plugin helps to insert <a href="https://cookie-script.com/" target="_blank">Cookie-Script.com</a> code inside your WordPress website in an easy, user-friendly way, without the need to edit template files.
+<strong>What does this plugin actually do?</strong>
 
-How to use this plugin: 
+It adds your CookieScript banner code to your site automatically. You won’t need to change any template files or figure out where scripts should go.
 
-1. Register account on <a href="https://cookie-script.com/" target="_blank">CookieScript</a>
-2. Create a banner for your website
-3. Copy your banner code and insert it in the field above
-4. All done, your website will now show the cookie banner
+<strong>How do I set it up?</strong>
 
-If needed, you can adjust your banner settings in your CookieScript dashboard.
+Just install and activate the plugin. That’s all it takes—the default CookieScript banner will appear on your site right away. No coding experience needed.
 
-You can also check our <a href="https://cookie-script.com/blog/cookie-consent-for-wordpress/" target="_blank">detailed instructions with video guide</a>.
+Click <a href="https://www.youtube.com/watch?v=iDhi-1SYBTM" target="_blank">here</a> for more detailed instructions!
 
-To block third-party cookies you might still have to make these changes:
-<a href="https://cookie-script.com/how-to-block-third-party-cookies.html" target="_blank">How to block third-party cookies</a>
+<strong>Is Google Consent Mode supported?</strong>
+
+Yes. CookieScript includes support for Google Consent Mode v2, so your site can continue collecting analytics and serving ads—while still respecting visitors’ choices. You’ll find the option in your CookieScript dashboard.
+
+<strong>Can it work with the WP Consent API?</strong>
+
+It can. If your site uses other plugins that rely on the WordPress Consent API, they’ll be able to read the same consent choices shared by CookieScript.
+
+<strong>What about third-party cookies - can it block those?</strong>
+
+Yes. Once you configure your banner in the CookieScript dashboard, it can prevent third-party scripts from running until users agree to it.
+
+<strong>Where can I get support?</strong>
+
+If you need a hand, you’ll find helpful articles, setup guides, and quick instruction videos right <a href="https://help.cookie-script.com/en" target="_blank">here</a>.
+
 
 == Screenshots ==
 1. Cookie-Script.com plugin settings page
 
 == Changelog ==
+1.2.2 - Security fixes.
 1.2.1 - Tested on a WordPress 6.8.1 version. Works as intended.
 1.2.0 - Tested on a WordPress 6.8.1 version. Works as intended.
 1.1.4 - Tested on a WordPress 6.6.2 version. Works as intended.
@@ -54,5 +72,3 @@ To block third-party cookies you might still have to make these changes:
 0.1 - Initial release
 
 == == == == == == == == == == == == == == == == == == == == == == == == == == == ==
-
-(づ｡◕‿‿◕｡)づ https://cookie-script.com/

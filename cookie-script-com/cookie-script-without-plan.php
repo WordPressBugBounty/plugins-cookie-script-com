@@ -18,24 +18,20 @@ class CookieScriptWithoutPlan extends Utility
         $this->timestamp = esc_attr(get_option("cookie_script_with_plan_timestamp"));
         $this->bannerAddedWithoutAccount = (bool) esc_attr(get_option("cookie_script_without_plan_script_added"));
 
-	    add_action("admin_enqueue_scripts", function() {
-		    if (isset($_GET['page']) && in_array($_GET['page'], ["cookie-script-with-account", "cookie-script", "cookie-script-home", "cookie-script-without-account"])) {
-			    $this->cookie_script_add_javascript();
-			    $this->cookie_script_enqueue_thickbox_assets();
-			    $this->cookie_script_admin_page_css_js();
-			    $this->cookie_script_enqueue_select2_assets();
-		    }
-	    });
+        add_action("admin_enqueue_scripts", function() {
+            if (isset($_GET['page']) && in_array($_GET['page'], ["cookie-script-with-account", "cookie-script", "cookie-script-home", "cookie-script-without-account"])) {
+                $this->cookie_script_add_javascript();
+                $this->cookie_script_enqueue_thickbox_assets();
+                $this->cookie_script_admin_page_css_js();
+                $this->cookie_script_enqueue_select2_assets();
+            }
+        });
         add_action("wp_head", array($this, "cookie_script_generate_script_url"), 1);
         add_action("admin_init", array($this, "cookie_script_register_settings"));
         add_action("wp_ajax_cookie_script_check_scan_status_callback", array($this, "cookie_script_check_scan_status_callback"));
-        add_action("wp_ajax_nopriv_cookie_script_check_scan_status_callback", array($this, "cookie_script_check_scan_status_callback"));
         add_action("wp_ajax_cookie_script_save_options", array($this, "cookie_script_save_options"));
-        add_action("wp_ajax_nopriv_cookie_script_save_options", array($this, "cookie_script_save_options"));
         add_action("wp_ajax_cookie_script_start_scan", array($this, "cookie_script_start_scan"));
-        add_action("wp_ajax_nopriv_cookie_script_start_scan", array($this, "cookie_script_start_scan"));
         add_action("wp_ajax_cookie_script_get_scanner_status", array($this, "cookie_script_get_scanner_status"));
-        add_action("wp_ajax_nopriv_cookie_script_get_scanner_status", array($this, "cookie_script_get_scanner_status"));
         add_action("admin_notices", array($this, "cookie_script_show_flash_message"));
     }
 
@@ -107,14 +103,15 @@ class CookieScriptWithoutPlan extends Utility
 
     public function cookie_script_check_scan_status_callback()
     {
+        if (!current_user_can("manage_options")) {
+            wp_send_json_error("Unauthorized", 401);
+        }
+
+        check_ajax_referer("cookie_script_nonce", 'nonce');
+
         update_option("cookie_script_redirect_location", "location-without-plan", true);
 
         ob_start();
-
-        if(!isset($_POST["nonce"]) || !wp_verify_nonce($_POST["nonce"], "cookie_script_nonce")) {
-            wp_send_json_error("Nonce verification failed!", 403);
-            exit;
-        }
 
         $data = $this->cookie_script_initiate_scan();
         $url = $data["script_url"];
@@ -163,13 +160,21 @@ class CookieScriptWithoutPlan extends Utility
             add_option('cookie_script_google_consent_mode_enabled', false);
         }
 
-        $this->cookie_script_save_options();
+        if (!empty($_POST['cs_without_plan_setting_save'])) {
+            $this->cookie_script_save_options();
+        }
 
         $this->create_content_with_out_account();
     }
 
     public function cookie_script_get_scanner_status()
     {
+        if (!current_user_can("manage_options")) {
+            wp_send_json_error("Unauthorized", 401);
+        }
+
+        check_ajax_referer("cookie_script_nonce", "nonce");
+
         $secretKey = get_option("cookie_script_secret");
         $response = wp_remote_get("https://cookie-script.com/api/wp-scan/check?wp_id=" . $secretKey);
 
@@ -218,6 +223,12 @@ class CookieScriptWithoutPlan extends Utility
      */
     public function cookie_script_start_scan()
     {
+        if (!current_user_can("manage_options")) {
+            wp_send_json_error("Unauthorized", 401);
+        }
+
+        check_ajax_referer("cookie_script_nonce", "nonce");
+
         $url = "https://cookie-script.com/api/wp-scan/start";
         $cookieScriptPolicyUrl = sanitize_text_field($_POST["url"]);
         $cookieScriptSelectedLanguage = sanitize_text_field($_POST["language"]);
@@ -363,7 +374,11 @@ class CookieScriptWithoutPlan extends Utility
     }
 
     public function cookie_script_save_options() {
-	    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["cs_without_plan_setting_save"])) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !current_user_can('manage_options')) {
+            wp_send_json_error(['message' => __('Unauthorized', 'cookie-script')], 401);
+        }
+
+        if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["cs_without_plan_setting_save"])) {
             $wpc = new Cswpca();
             $wpc->cookie_script_save_wpc();
 
@@ -371,10 +386,10 @@ class CookieScriptWithoutPlan extends Utility
                 $langRegexPattern = '/(?i)^\s*([a-z]{2}(-[a-z0-9]{1,3})?\s*)(,\s*[a-z]{2}(-[a-z0-9]{1,3})?\s*)*$/i';
 
                 foreach ($_POST["consent_settings"]["regional"] as $region) {
-	                if (isset($region["region_code"]) && !$this->validate_positive_integer($region["wait_for_update"])) {
-		                $this->flashMessage("Invalid integer detected: {$region["wait_for_update"]}, it must be positive or full number. No changes were saved.", "error", "flash-message__error");
-		                return;
-	                }
+                    if (isset($region["region_code"]) && !$this->validate_positive_integer($region["wait_for_update"])) {
+                        $this->flashMessage("Invalid integer detected: {$region["wait_for_update"]}, it must be positive or full number. No changes were saved.", "error", "flash-message__error");
+                        return;
+                    }
 
                     if (isset($region["region_code"]) && !$this->string_validation($region["region_code"], $langRegexPattern)) {
                         $this->flashMessage("Invalid language code detected: {$region["region_code"]}. No changes were saved.", "error", "flash-message__error");
@@ -383,12 +398,12 @@ class CookieScriptWithoutPlan extends Utility
                 }
             }
 
-		    $waitForUpdateGlobalSetting = $_POST["consent_settings"]["global"]["wait_for_update"];
+            $waitForUpdateGlobalSetting = $_POST["consent_settings"]["global"]["wait_for_update"];
 
-		    if (!$this->validate_positive_integer($waitForUpdateGlobalSetting)) {
-			    $this->flashMessage("Invalid integer detected: {$waitForUpdateGlobalSetting}, it must be positive or full number. No changes were saved.", "error", "flash-message__error");
-			    return;
-		    }
+            if (!$this->validate_positive_integer($waitForUpdateGlobalSetting)) {
+                $this->flashMessage("Invalid integer detected: {$waitForUpdateGlobalSetting}, it must be positive or full number. No changes were saved.", "error", "flash-message__error");
+                return;
+            }
 
             update_option("cookie_script_google_consent_mode_enabled", $_POST["enable_google_consent_mode"], true);
 
