@@ -733,6 +733,6 @@ class Utility
 
     public function is_preview()
     {
-        return isset($_GET['elementor-preview']) || $_SERVER['HTTP_SEC_FETCH_DEST'] === 'iframe';
+        return isset($_GET['elementor-preview']) || (isset($_SERVER['HTTP_SEC_FETCH_DEST']) && $_SERVER['HTTP_SEC_FETCH_DEST'] === 'iframe');
     }
 }
