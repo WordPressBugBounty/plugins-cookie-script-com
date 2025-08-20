@@ -3,7 +3,7 @@
 include_once( ABSPATH . "wp-admin/includes/plugin.php" );
 
 class PluginUpdater {
-    const NEW_VERSION = "1.0.4";
+    const NEW_VERSION = "1.2.4";
 
     public function __construct() {
         add_action("init", array($this, "check_and_update"));

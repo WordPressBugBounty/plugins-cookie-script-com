@@ -3,7 +3,7 @@
 
 # Plugin Name:       Cookie-Script.com
 # Description:       Cookie-Script.com WordPress plugin.
-# Version:           1.2.3
+# Version:           1.2.4
 # Author:            Cookie-Script.com
 # Author URI:        https://cookie-script.com/
 # Text Domain:       CookieScript
@@ -171,7 +171,7 @@ if (!class_exists("CookieScriptIndex")) {
     function cookie_script_register_submenu_page()
     {
         add_submenu_page(
-            null,
+            "",
             "With Account",
             "With Account",
             "manage_options",
@@ -180,7 +180,7 @@ if (!class_exists("CookieScriptIndex")) {
         );
 
         add_submenu_page(
-            null,
+            "",
             "Without Account",
             "Without Account",
             "manage_options",
@@ -189,7 +189,7 @@ if (!class_exists("CookieScriptIndex")) {
         );
 
         add_submenu_page(
-            null,
+            "",
             "Cookie Script",
             "Cookie Script",
             "manage_options",
