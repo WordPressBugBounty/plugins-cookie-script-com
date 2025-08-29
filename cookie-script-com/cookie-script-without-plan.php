@@ -32,6 +32,7 @@ class CookieScriptWithoutPlan extends Utility
         add_action("wp_ajax_cookie_script_save_options", array($this, "cookie_script_save_options"));
         add_action("wp_ajax_cookie_script_start_scan", array($this, "cookie_script_start_scan"));
         add_action("wp_ajax_cookie_script_get_scanner_status", array($this, "cookie_script_get_scanner_status"));
+        add_action("wp_ajax_cookie_script_get_update_script", array($this, "cookie_script_get_update_script"));
         add_action("admin_notices", array($this, "cookie_script_show_flash_message"));
     }
 
@@ -50,8 +51,14 @@ class CookieScriptWithoutPlan extends Utility
         if (is_admin()) {
 
             wp_enqueue_script(
+                'helpers',
+                plugins_url('assets/js/helpers.js', __FILE__)
+            );
+
+            wp_enqueue_script(
                 "cookie_script_admin",
-                plugin_dir_url(__FILE__) . "assets/js/cookie_script_admin.js"
+                plugin_dir_url(__FILE__) . "assets/js/cookie_script_admin.js",
+                ['helpers']
             );
 
             wp_localize_script(
@@ -216,6 +223,31 @@ class CookieScriptWithoutPlan extends Utility
         }
 
         return null;
+    }
+
+    public function cookie_script_get_update_script()
+    {
+        $secretKey = get_option("cookie_script_secret");
+        $response = wp_remote_get("https://cookie-script.com/api/wp-scan/info?wp_id=" . $secretKey);
+
+        if (is_wp_error($response)) {
+            $errorMessage = $response->get_error_message();
+
+            echo "Something went wrong: $errorMessage";
+        } else {
+            $body = wp_remote_retrieve_body($response);
+            $data = json_decode($body, true);
+
+            if(!empty($data["error"])) {
+                wp_send_json($response["response"]);
+            }
+
+            if (!is_null($data)) {
+                $this->cookie_script_save_script_to_file(file_get_contents($data["script_url"]), "cookie-script");
+
+                wp_send_json($response["response"]);
+            }
+        }
     }
 
     /**

@@ -3,7 +3,7 @@
 
 # Plugin Name:       Cookie-Script.com
 # Description:       Cookie-Script.com WordPress plugin.
-# Version:           1.2.4
+# Version:           1.3.0
 # Author:            Cookie-Script.com
 # Author URI:        https://cookie-script.com/
 # Text Domain:       CookieScript

@@ -3,7 +3,7 @@ Contributors: cookiescriptcom
 Tags: gdpr, cookie, compliance, cookiescript, consent
 Requires at least: 4.9
 Tested up to: 6.8.2
-Stable tag: 1.2.4
+Stable tag: 1.3.0
 Requires PHP: 7.0
 License: MIT License (Expat)
 License URI: https://tldrlegal.com/license/mit-license
@@ -51,6 +51,7 @@ If you need a hand, you’ll find helpful articles, setup guides, and quick inst
 1. Cookie-Script.com plugin settings page
 
 == Changelog ==
+1.3.0 - Tested on a WordPress 6.8.2 version. Works as intended.
 1.2.4 - Tested on a WordPress 6.8.2 version. Works as intended.
 1.2.3 - Tested on a WordPress 6.8.1 version. Works as intended.
 1.2.2 - Security fixes.

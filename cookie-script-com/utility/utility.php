@@ -245,9 +245,10 @@ class Utility
                             <div id="scan_form">
                                 <input type="hidden" name="cs_without_plan_setting_scan" value="<?php echo time(); ?>">
                                 <div class="scan-button-wrapper">
-                                    <button id="scan-website-button" class="CookieScript__button-primary">
+                                    <button id="scan-website-button" class="CookieScript__button-primary" style="margin-right: 12px;">
                                         <?php echo count($cookies) > 0 ? esc_html_e("Re-scan website", "CookieScript") : esc_html_e("Scan website", "CookieScript"); ?>
                                     </button>
+
                                     <a id="thickbox" class="thickbox"
                                        href="#TB_inline?width=600&height=550&inlineId=scan-modal"></a>
                                     <span id="CookieScript-message" style="display: none"></span>
@@ -262,6 +263,9 @@ class Utility
                                             <span></span>
                                         </div>
                                     </div>
+                                    <button id="cs-update-script" class="CookieScript__button-primary">
+                                        Update banner script
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -662,40 +666,41 @@ class Utility
                 window.gtag = window.gtag || function () {
                     dataLayer.push(arguments)
                 };
-
-                gtag('set', 'developer_id.dMmY1Mm', true);
-                gtag('set', 'ads_data_redaction', true);
-
-                gtag('consent', 'default', {
-                    ad_storage: '{$consentModeSettings['global']['ad_storage']}',
-                    analytics_storage: '{$consentModeSettings['global']['analytics_storage']}',
-                    ad_user_data: '{$consentModeSettings['global']['ad_user_data']}',
-                    ad_personalization: '{$consentModeSettings['global']['ad_personalization']}',
-                    functionality_storage: '{$consentModeSettings['global']['functionality_storage']}',
-                    personalization_storage: '{$consentModeSettings['global']['personalization_storage']}',
-                    security_storage: '{$consentModeSettings['global']['security_storage']}',
-                    wait_for_update: {$consentModeSettings['global']['wait_for_update']}
-                })";
+            ";
 
             if (!is_null($consentModeSettings['regional']) && !empty($consentModeSettings['regional'])) {
                 foreach ($consentModeSettings['regional'] as $region) {
                     $encodedRegionCode = json_encode(array_map('trim', explode(',', $region['region_code'])));
 
                     echo "
-                        
-                gtag('consent', 'default', {
-                    ad_storage: '{$region['ad_storage']}',
-                    analytics_storage: '{$region['analytics_storage']}',
-                    ad_user_data: '{$region['ad_user_data']}',
-                    ad_personalization: '{$region['ad_personalization']}',
-                    functionality_storage: '{$region['functionality_storage']}',
-                    personalization_storage: '{$region['personalization_storage']}',
-                    security_storage: '{$region['security_storage']}',
-                    wait_for_update: '{$region['wait_for_update']}',
-                    region:  JSON.parse('{$encodedRegionCode}'.replace(/&quot;/g, '\"'))
-                })";
+                    gtag('consent', 'default', {
+                        ad_storage: '{$region['ad_storage']}',
+                        analytics_storage: '{$region['analytics_storage']}',
+                        ad_user_data: '{$region['ad_user_data']}',
+                        ad_personalization: '{$region['ad_personalization']}',
+                        functionality_storage: '{$region['functionality_storage']}',
+                        personalization_storage: '{$region['personalization_storage']}',
+                        security_storage: '{$region['security_storage']}',
+                        wait_for_update: '{$region['wait_for_update']}',
+                        region:  JSON.parse('{$encodedRegionCode}'.replace(/&quot;/g, '\"'))
+                    })";
                 }
             }
+
+            echo "
+            gtag('consent', 'default', {
+                ad_storage: '{$consentModeSettings['global']['ad_storage']}',
+                analytics_storage: '{$consentModeSettings['global']['analytics_storage']}',
+                ad_user_data: '{$consentModeSettings['global']['ad_user_data']}',
+                ad_personalization: '{$consentModeSettings['global']['ad_personalization']}',
+                functionality_storage: '{$consentModeSettings['global']['functionality_storage']}',
+                personalization_storage: '{$consentModeSettings['global']['personalization_storage']}',
+                security_storage: '{$consentModeSettings['global']['security_storage']}',
+                wait_for_update: {$consentModeSettings['global']['wait_for_update']}
+            })
+                                
+            gtag('set', 'developer_id.dMmY1Mm', true);
+            gtag('set', 'ads_data_redaction', true);";
 
             echo "</script>";
         } else {

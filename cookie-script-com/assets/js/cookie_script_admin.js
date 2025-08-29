@@ -23,12 +23,14 @@
 
 jQuery(document).ready(function ( $ ) {
 	let openModalButton = $("#scan-website-button")
+	let updateBannerScriptButton = $("#cs-update-script")
 	let scanWebsite = $("#scan-website")
 
 	scanning()
 	finishedScanning()
 	scannerInformation()
 	removeFlashMessage()
+	checkScanComplete()
 
 	if (getCookie("isScanning") === "scanning") {
 		checkScanStatus()
@@ -45,6 +47,49 @@ jQuery(document).ready(function ( $ ) {
 		startScanWebsite()
 		tb_remove()
 	})
+
+	updateBannerScriptButton.on("click", async function () {
+		if (typeof canUpdate === "function" && !canUpdate()) {
+			showRateLimitMessage()
+			return
+		}
+
+		const $btn = updateBannerScriptButton;
+		$btn.prop("disabled", true).text("Updating...")
+
+		try {
+			await updateScript()
+			$btn.text("Updated")
+		} catch (e) {
+			if (e && e.code === "RATE_LIMITED") {
+				showRateLimitMessage(e.retryAfterMs)
+			} else {
+				$btn.text("Failed")
+			}
+		} finally {
+			setTimeout(() => {
+				$btn.prop("disabled", false).text("Update banner script");
+			}, 2000);
+		}
+	})
+
+	function checkScanComplete() {
+		if(safeGet("isScanCompleted")) {
+			$("#cs-update-script").css("display", "block")
+		}
+	}
+
+	function showRateLimitMessage(retryAfterMs) {
+		const remain = (typeof retryAfterMs === "number")
+				? retryAfterMs
+				: (typeof timeUntilNext === "function" ? timeUntilNext() : 0)
+
+		const msg = (typeof formatRemaining === "function")
+				? formatRemaining(remain)
+				: `${Math.ceil(remain / 60000)}m`
+
+		infoMessage(`Try again in ${msg}`, "CookieScript__error")
+	}
 
 	function removeFlashMessage() {
 		setTimeout(function () {
@@ -87,6 +132,11 @@ jQuery(document).ready(function ( $ ) {
 			},
 			success: function ( response ) {
 				if (response === "finish") {
+
+					safeSet("isScanCompleted", true)
+
+					$("#cs-update-script").css("display", "block")
+
 					finishedScanning(true)
 				}
 
@@ -136,18 +186,9 @@ jQuery(document).ready(function ( $ ) {
 			success: function ( response ) {
 				let res = JSON.parse(response)
 
-				if (res.error !== null) {
+				if (res.error) {
 					openModalButton.on("click", function () {
-						$("#CookieScript-message")
-								.addClass("CookieScript__error")
-								.text(res.error)
-								.show()
-								.delay(3000)
-								.fadeOut("slow", function () {
-									$(this)
-											.removeClass("CookieScript__error")
-											.text("")
-								})
+						infoMessage(res.error, "CookieScript__error")
 					})
 				} else {
 					openModalButton.on("click", function () {
@@ -159,6 +200,19 @@ jQuery(document).ready(function ( $ ) {
 				console.error("Error:", textStatus, ", Message:", errorThrown)
 			}
 		})
+	}
+
+	function infoMessage(message, messageClass) {
+		$("#CookieScript-message")
+				.addClass(messageClass)
+				.text(message)
+				.show()
+				.delay(3000)
+				.fadeOut("slow", function () {
+					$(this)
+							.removeClass(messageClass)
+							.text("")
+				})
 	}
 
 	function getCookie( name ) {
@@ -176,6 +230,35 @@ jQuery(document).ready(function ( $ ) {
 			}
 		}
 		return ""
+	}
+
+	async function updateScript() {
+		if (!canUpdate()) {
+			const remain = timeUntilNext()
+			const err = new Error("Update allowed only once every 24 hours")
+			err.code = "RATE_LIMITED"
+			err.retryAfterMs = remain
+			throw err
+		}
+
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				type: "GET",
+				url: ajaxRequest.ajax_url,
+				data: {
+					action: "cookie_script_get_update_script",
+					nonce: ajaxRequest.nonce,
+				},
+				success: function (response) {
+					markUpdated()
+					resolve(response)
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					console.error("Error:", textStatus, ", Message:", errorThrown)
+					reject(errorThrown)
+				}
+			})
+		})
 	}
 })
 
