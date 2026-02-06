@@ -1,8 +1,9 @@
 <?php
 
-class Cswpca
+class CookieScriptWpca
 {
-    function __construct() {
+    function __construct()
+    {
         add_action("admin_init", array($this, "cookie_script_register_settings"));
     }
 
@@ -24,9 +25,9 @@ class Cswpca
                     <label class="control-label col-lg-4" for="functional-cookies">Functional Cookies</label>
                     <div class="col-lg-2">
                         <select name="functional-cookies">
-                            <option value="deny" ' . $getSelected('functional-cookies', 'deny') . '>Deny</option>
-                            <option value="allow" ' . $getSelected('functional-cookies', 'allow') . '>Allow</option>
-                            <option value="ignore" ' . $getSelected('functional-cookies', 'ignore') . '>Ignore</option>
+                            <option value="deny" ' . esc_html($getSelected('functional-cookies', 'deny')) . '>Deny</option>
+                            <option value="allow" ' . esc_html($getSelected('functional-cookies', 'allow')) . '>Allow</option>
+                            <option value="ignore" ' . esc_html($getSelected('functional-cookies', 'ignore')) . '>Ignore</option>
                         </select>
                     </div>
                 </div>
@@ -34,9 +35,9 @@ class Cswpca
                     <label class="control-label col-lg-4" for="statistics-cookies">Statistics Cookies</label>
                     <div class="col-lg-2">
                         <select name="statistics-cookies">
-                            <option value="deny" ' . $getSelected('statistics-cookies', 'deny') . '>Deny</option>
-                            <option value="allow" ' . $getSelected('statistics-cookies', 'allow') . '>Allow</option>
-                            <option value="ignore" ' . $getSelected('statistics-cookies', 'ignore') . '>Ignore</option>
+                            <option value="deny" ' . esc_html($getSelected('statistics-cookies', 'deny')) . '>Deny</option>
+                            <option value="allow" ' . esc_html($getSelected('statistics-cookies', 'allow')) . '>Allow</option>
+                            <option value="ignore" ' . esc_html($getSelected('statistics-cookies', 'ignore')) . '>Ignore</option>
                         </select>
                     </div>
                 </div>
@@ -44,9 +45,9 @@ class Cswpca
                     <label class="control-label col-lg-4" for="marketing-cookies">Marketing Cookies</label>
                     <div class="col-lg-2">
                         <select name="marketing-cookies">
-                            <option value="deny" ' . $getSelected('marketing-cookies', 'deny') . '>Deny</option>
-                            <option value="allow" ' . $getSelected('marketing-cookies', 'allow') . '>Allow</option>
-                            <option value="ignore" ' . $getSelected('marketing-cookies', 'ignore') . '>Ignore</option>
+                            <option value="deny" ' . esc_html($getSelected('marketing-cookies', 'deny')) . '>Deny</option>
+                            <option value="allow" ' . esc_html($getSelected('marketing-cookies', 'allow')) . '>Allow</option>
+                            <option value="ignore" ' . esc_html($getSelected('marketing-cookies', 'ignore')) . '>Ignore</option>
                         </select>
                     </div>
                 </div>
@@ -54,9 +55,9 @@ class Cswpca
                     <label class="control-label col-lg-4" for="preferences-cookies">Preferences Cookies</label>
                     <div class="col-lg-2">
                         <select name="preferences-cookies">
-                            <option value="deny" ' . $getSelected('preferences-cookies', 'deny') . '>Deny</option>
-                            <option value="allow" ' . $getSelected('preferences-cookies', 'allow') . '>Allow</option>
-                            <option value="ignore" ' . $getSelected('preferences-cookies', 'ignore') . '>Ignore</option>
+                            <option value="deny" ' . esc_html($getSelected('preferences-cookies', 'deny')) . '>Deny</option>
+                            <option value="allow" ' . esc_html($getSelected('preferences-cookies', 'allow')) . '>Allow</option>
+                            <option value="ignore" ' . esc_html($getSelected('preferences-cookies', 'ignore')) . '>Ignore</option>
                         </select>
                     </div>
                 </div>
@@ -67,8 +68,7 @@ class Cswpca
             echo '
         <div class="panel-footer">
             <button type="submit" name="submit" class="CookieScript__button-success">
-                <img src="' . $imageUrls["save-icon.svg"] . '"
-                     alt="Save Icon">
+                <img src="' . esc_html($imageUrls["save-icon.svg"]) . '" alt="Save Icon">
                 Save settings
             </button>
         </div>';
@@ -79,23 +79,51 @@ class Cswpca
 
     public function cookie_script_save_wpc()
     {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing
         if (!empty($_POST['functional-cookies'])) {
             $consent_data = [
-                'functional-cookies'  => sanitize_text_field($_POST['functional-cookies']),
-                'statistics-cookies'  => sanitize_text_field($_POST['statistics-cookies']),
-                'marketing-cookies'   => sanitize_text_field($_POST['marketing-cookies']),
-                'preferences-cookies' => sanitize_text_field($_POST['preferences-cookies']),
+                // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                'functional-cookies'  => sanitize_text_field(wp_unslash($_POST['functional-cookies'])),
+                // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                'statistics-cookies'  => isset($_POST['statistics-cookies']) ? sanitize_text_field(wp_unslash($_POST['statistics-cookies'])) : '',
+                // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                'marketing-cookies'   => isset($_POST['marketing-cookies']) ? sanitize_text_field(wp_unslash($_POST['marketing-cookies'])) : '',
+                // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                'preferences-cookies' => isset($_POST['preferences-cookies']) ? sanitize_text_field(wp_unslash($_POST['preferences-cookies'])) : '',
             ];
 
             update_option('cookie_script_wp_init_consent', $consent_data);
         }
     }
 
+    public function sanitize_cswpca_options($input)
+    {
+        if (!is_array($input)) {
+            return [];
+        }
+
+        $sanitized_input = [];
+        $allowed_values  = ['deny', 'allow', 'ignore'];
+        $fields          = ['functional-cookies', 'statistics-cookies', 'marketing-cookies', 'preferences-cookies'];
+
+        foreach ($fields as $field) {
+            if (isset($input[$field]) && in_array($input[$field], $allowed_values, true)) {
+                $sanitized_input[$field] = $input[$field];
+            }
+        }
+
+        return $sanitized_input;
+    }
+
     public function cookie_script_register_settings()
     {
         register_setting(
             "cswpca_options",
-            "cookie_script_wp_init_consent"
+            "cookie_script_wp_init_consent",
+            array(
+                'sanitize_callback' => array($this, 'sanitize_cswpca_options'),
+                'type'              => 'array',
+            )
         );
     }
 }

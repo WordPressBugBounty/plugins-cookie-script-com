@@ -13,26 +13,26 @@
   }
 
   function consentWithoutCategories() {
-      CookieScript.instance.onAcceptAll = function() {
-        wp_set_consent("functional", "allow");
-        wp_set_consent("statistics", "allow");
-        wp_set_consent("marketing", "allow");
-        wp_set_consent("preferences", "allow");
-      };
+    CookieScript.instance.onAcceptAll = function () {
+      wp_set_consent("functional", "allow");
+      wp_set_consent("statistics", "allow");
+      wp_set_consent("marketing", "allow");
+      wp_set_consent("preferences", "allow");
+    };
 
-      CookieScript.instance.onAccept = function(categories) {
-        wp_set_consent("functional", "allow");
-        wp_set_consent("statistics", "allow");
-        wp_set_consent("marketing", "allow");
-        wp_set_consent("preferences", "allow");
-      };
+    CookieScript.instance.onAccept = function (categories) {
+      wp_set_consent("functional", "allow");
+      wp_set_consent("statistics", "allow");
+      wp_set_consent("marketing", "allow");
+      wp_set_consent("preferences", "allow");
+    };
 
-      CookieScript.instance.onReject = function() {
-        wp_set_consent("functional", "deny");
-        wp_set_consent("statistics", "deny");
-        wp_set_consent("marketing", "deny");
-        wp_set_consent("preferences", "deny");
-      };
+    CookieScript.instance.onReject = function () {
+      wp_set_consent("functional", "deny");
+      wp_set_consent("statistics", "deny");
+      wp_set_consent("marketing", "deny");
+      wp_set_consent("preferences", "deny");
+    };
   }
 
   function clearConsentCookies() {
@@ -68,25 +68,31 @@
 
   function syncConsent() {
     if (typeof wp_set_consent !== "function") return
-    const csCats = CookieScript.instance.currentState().categories ?? []
-    const mapCats = csCats.map(cat => mapCsCat[cat])
-    const consentAction = CookieScript.instance.currentState().action
+    const currentState = CookieScript.instance.currentState()
+    const csCats = currentState.categories ?? []
+    const mapCats = csCats.map(cat => mapCsCat[cat]).filter(Boolean)
+    const consentAction = currentState.action
+    const saved = (window.wpConsentData && window.wpConsentData.consents) ? window.wpConsentData.consents : {};
 
     if (!consentAction) {
       wpInitConsent()
-
       return
     }
 
     if (mapCats.length === 0) {
       consentWithoutCategories()
-      
       return
     }
 
     wp_set_consent("functional", "allow");
 
     ["statistics", "marketing", "preferences"].forEach(apiCat => {
+      const savedValue = saved[apiCat + "-cookies"];
+
+      if (savedValue === "ignore") {
+        return;
+      }
+
       if (mapCats.includes(apiCat)) {
         wp_set_consent(apiCat, "allow")
       } else {

@@ -1,16 +1,16 @@
 (function () {
-	jQuery(document).ready(function ( $ ) {
+	jQuery(document).ready(function ($) {
 		const minSrcLength = 59
 
 		let that,
-				url,
-				itemId = $("#cookie_script_item_id").val(),
-				srcUrl = $("#cookie_script_item_src").val()
+			url,
+			itemId = $("#cookie_script_item_id").val(),
+			srcUrl = $("#cookie_script_item_src").val()
 
 		$("#cookie_script_item_src").change("change keydown keyup click", function () {
 			that = $(this),
-					itemId = $(this).val(),
-					url = srcUrl
+				itemId = $(this).val(),
+				url = srcUrl
 
 			if (itemId.length >= minSrcLength) {
 				that.removeClass("CookieScript--error").addClass("CookieScript--success")
@@ -21,7 +21,7 @@
 	})
 })()
 
-jQuery(document).ready(function ( $ ) {
+jQuery(document).ready(function ($) {
 	let openModalButton = $("#scan-website-button")
 	let updateBannerScriptButton = $("#cs-update-script")
 	let scanWebsite = $("#scan-website")
@@ -40,7 +40,7 @@ jQuery(document).ready(function ( $ ) {
 		scannerInformation()
 	})
 
-	scanWebsite.on("click", function ( e ) {
+	scanWebsite.on("click", function (e) {
 		e.preventDefault()
 
 		checkScanStatus()
@@ -74,19 +74,19 @@ jQuery(document).ready(function ( $ ) {
 	})
 
 	function checkScanComplete() {
-		if(safeGet("isScanCompleted")) {
+		if (safeGet("isScanCompleted")) {
 			$("#cs-update-script").css("display", "block")
 		}
 	}
 
 	function showRateLimitMessage(retryAfterMs) {
 		const remain = (typeof retryAfterMs === "number")
-				? retryAfterMs
-				: (typeof timeUntilNext === "function" ? timeUntilNext() : 0)
+			? retryAfterMs
+			: (typeof timeUntilNext === "function" ? timeUntilNext() : 0)
 
 		const msg = (typeof formatRemaining === "function")
-				? formatRemaining(remain)
-				: `${Math.ceil(remain / 60000)}m`
+			? formatRemaining(remain)
+			: `${Math.ceil(remain / 60000)}m`
 
 		infoMessage(`Try again in ${msg}`, "CookieScript__error")
 	}
@@ -125,12 +125,12 @@ jQuery(document).ready(function ( $ ) {
 	function checkScanStatus() {
 		$.ajax({
 			type: "POST",
-			url: ajaxRequest.ajax_url,
+			url: cookieScriptAjaxRequest.ajax_url,
 			data: {
 				action: "cookie_script_check_scan_status_callback",
-				nonce: ajaxRequest.nonce,
+				nonce: cookieScriptAjaxRequest.nonce,
 			},
-			success: function ( response ) {
+			success: function (response) {
 				if (response === "finish") {
 
 					safeSet("isScanCompleted", true)
@@ -147,7 +147,7 @@ jQuery(document).ready(function ( $ ) {
 					scanning()
 				}
 			},
-			error: function ( jqXHR, textStatus, errorThrown ) {
+			error: function (jqXHR, textStatus, errorThrown) {
 				console.error("Error:", textStatus, ", Message:", errorThrown)
 			}
 		})
@@ -159,17 +159,17 @@ jQuery(document).ready(function ( $ ) {
 
 		$.ajax({
 			type: "POST",
-			url: ajaxRequest.ajax_url,
+			url: cookieScriptAjaxRequest.ajax_url,
 			data: {
 				action: "cookie_script_start_scan",
-				nonce: ajaxRequest.nonce,
+				nonce: cookieScriptAjaxRequest.nonce,
 				url: url,
 				language: language,
 			},
 			success: function (r) {
 				checkScanStatus()
 			},
-			error: function ( jqXHR, textStatus, errorThrown ) {
+			error: function (jqXHR, textStatus, errorThrown) {
 				console.error("Error:", textStatus, ", Message:", errorThrown)
 			}
 		})
@@ -178,12 +178,12 @@ jQuery(document).ready(function ( $ ) {
 	function scannerInformation() {
 		$.ajax({
 			type: "GET",
-			url: ajaxRequest.ajax_url,
+			url: cookieScriptAjaxRequest.ajax_url,
 			data: {
 				action: "cookie_script_get_scanner_status",
-				nonce: ajaxRequest.nonce,
+				nonce: cookieScriptAjaxRequest.nonce,
 			},
-			success: function ( response ) {
+			success: function (response) {
 				let res = JSON.parse(response)
 
 				if (res.error) {
@@ -196,7 +196,7 @@ jQuery(document).ready(function ( $ ) {
 					});
 				}
 			},
-			error: function ( jqXHR, textStatus, errorThrown ) {
+			error: function (jqXHR, textStatus, errorThrown) {
 				console.error("Error:", textStatus, ", Message:", errorThrown)
 			}
 		})
@@ -204,18 +204,18 @@ jQuery(document).ready(function ( $ ) {
 
 	function infoMessage(message, messageClass) {
 		$("#CookieScript-message")
-				.addClass(messageClass)
-				.text(message)
-				.show()
-				.delay(3000)
-				.fadeOut("slow", function () {
-					$(this)
-							.removeClass(messageClass)
-							.text("")
-				})
+			.addClass(messageClass)
+			.text(message)
+			.show()
+			.delay(3000)
+			.fadeOut("slow", function () {
+				$(this)
+					.removeClass(messageClass)
+					.text("")
+			})
 	}
 
-	function getCookie( name ) {
+	function getCookie(name) {
 		let cookieArray = document.cookie.split(";")
 
 		for (let i = 0; i < cookieArray.length; i++) {
@@ -244,10 +244,10 @@ jQuery(document).ready(function ( $ ) {
 		return new Promise((resolve, reject) => {
 			$.ajax({
 				type: "GET",
-				url: ajaxRequest.ajax_url,
+				url: cookieScriptAjaxRequest.ajax_url,
 				data: {
 					action: "cookie_script_get_update_script",
-					nonce: ajaxRequest.nonce,
+					nonce: cookieScriptAjaxRequest.nonce,
 				},
 				success: function (response) {
 					markUpdated()
@@ -262,42 +262,42 @@ jQuery(document).ready(function ( $ ) {
 	}
 })
 
-jQuery(document).ready(function ( $ ) {
+jQuery(document).ready(function ($) {
 	let languages = [
-		{ "value": "ar", "flag": flags.assetsPath + "img/flags/AR.svg", "language": "Arabic" },
-		{ "value": "eu", "flag": flags.assetsPath + "img/flags/EU.svg", "language": "Basque" },
-		{ "value": "bg", "flag": flags.assetsPath + "img/flags/BG.svg", "language": "Bulgarian" },
-		{ "value": "ca", "flag": flags.assetsPath + "img/flags/CA.svg", "language": "Catalan" },
-		{ "value": "hr", "flag": flags.assetsPath + "img/flags/HR.svg", "language": "Croatian" },
-		{ "value": "cs", "flag": flags.assetsPath + "img/flags/CS.svg", "language": "Czech" },
-		{ "value": "da", "flag": flags.assetsPath + "img/flags/DA.svg", "language": "Danish" },
-		{ "value": "nl", "flag": flags.assetsPath + "img/flags/NL.svg", "language": "Dutch" },
-		{ "value": "en", "flag": flags.assetsPath + "img/flags/EN.svg", "language": "English" },
-		{ "value": "et", "flag": flags.assetsPath + "img/flags/ET.svg", "language": "Estonian" },
-		{ "value": "fi", "flag": flags.assetsPath + "img/flags/FI.svg", "language": "Finnish" },
-		{ "value": "fr", "flag": flags.assetsPath + "img/flags/FR.svg", "language": "French" },
-		{ "value": "de", "flag": flags.assetsPath + "img/flags/DE.svg", "language": "German" },
-		{ "value": "el", "flag": flags.assetsPath + "img/flags/EL.svg", "language": "Greek" },
-		{ "value": "hi", "flag": flags.assetsPath + "img/flags/HI.svg", "language": "Hindi" },
-		{ "value": "hu", "flag": flags.assetsPath + "img/flags/HU.svg", "language": "Hungarian" },
-		{ "value": "ga", "flag": flags.assetsPath + "img/flags/GA.svg", "language": "Irish" },
-		{ "value": "it", "flag": flags.assetsPath + "img/flags/IT.svg", "language": "Italian" },
-		{ "value": "lv", "flag": flags.assetsPath + "img/flags/LV.svg", "language": "Latvian" },
-		{ "value": "lt", "flag": flags.assetsPath + "img/flags/LT.svg", "language": "Lithuanian" },
-		{ "value": "mt", "flag": flags.assetsPath + "img/flags/MT.svg", "language": "Maltese" },
-		{ "value": "no", "flag": flags.assetsPath + "img/flags/NO.svg", "language": "Norwegian" },
-		{ "value": "pl", "flag": flags.assetsPath + "img/flags/PL.svg", "language": "Polish" },
-		{ "value": "pt", "flag": flags.assetsPath + "img/flags/PT.svg", "language": "Portuguese" },
-		{ "value": "ro", "flag": flags.assetsPath + "img/flags/RO.svg", "language": "Romanian" },
-		{ "value": "ru", "flag": flags.assetsPath + "img/flags/RU.svg", "language": "Russian" },
-		{ "value": "sk", "flag": flags.assetsPath + "img/flags/SK.svg", "language": "Slovak" },
-		{ "value": "sl", "flag": flags.assetsPath + "img/flags/SL.svg", "language": "Slovenian" },
-		{ "value": "es", "flag": flags.assetsPath + "img/flags/ES.svg", "language": "Spanish" },
-		{ "value": "sv", "flag": flags.assetsPath + "img/flags/SV.svg", "language": "Swedish" },
-		{ "value": "th", "flag": flags.assetsPath + "img/flags/TH.svg", "language": "Thai" },
-		{ "value": "tr", "flag": flags.assetsPath + "img/flags/TR.svg", "language": "Turkish" },
-		{ "value": "uk", "flag": flags.assetsPath + "img/flags/UK.svg", "language": "Ukrainian" },
-		{ "value": "vi", "flag": flags.assetsPath + "img/flags/VI.svg", "language": "Vietnamese" },
+		{ "value": "ar", "flag": cookieScriptFlags.assetsPath + "img/flags/AR.svg", "language": "Arabic" },
+		{ "value": "eu", "flag": cookieScriptFlags.assetsPath + "img/flags/EU.svg", "language": "Basque" },
+		{ "value": "bg", "flag": cookieScriptFlags.assetsPath + "img/flags/BG.svg", "language": "Bulgarian" },
+		{ "value": "ca", "flag": cookieScriptFlags.assetsPath + "img/flags/CA.svg", "language": "Catalan" },
+		{ "value": "hr", "flag": cookieScriptFlags.assetsPath + "img/flags/HR.svg", "language": "Croatian" },
+		{ "value": "cs", "flag": cookieScriptFlags.assetsPath + "img/flags/CS.svg", "language": "Czech" },
+		{ "value": "da", "flag": cookieScriptFlags.assetsPath + "img/flags/DA.svg", "language": "Danish" },
+		{ "value": "nl", "flag": cookieScriptFlags.assetsPath + "img/flags/NL.svg", "language": "Dutch" },
+		{ "value": "en", "flag": cookieScriptFlags.assetsPath + "img/flags/EN.svg", "language": "English" },
+		{ "value": "et", "flag": cookieScriptFlags.assetsPath + "img/flags/ET.svg", "language": "Estonian" },
+		{ "value": "fi", "flag": cookieScriptFlags.assetsPath + "img/flags/FI.svg", "language": "Finnish" },
+		{ "value": "fr", "flag": cookieScriptFlags.assetsPath + "img/flags/FR.svg", "language": "French" },
+		{ "value": "de", "flag": cookieScriptFlags.assetsPath + "img/flags/DE.svg", "language": "German" },
+		{ "value": "el", "flag": cookieScriptFlags.assetsPath + "img/flags/EL.svg", "language": "Greek" },
+		{ "value": "hi", "flag": cookieScriptFlags.assetsPath + "img/flags/HI.svg", "language": "Hindi" },
+		{ "value": "hu", "flag": cookieScriptFlags.assetsPath + "img/flags/HU.svg", "language": "Hungarian" },
+		{ "value": "ga", "flag": cookieScriptFlags.assetsPath + "img/flags/GA.svg", "language": "Irish" },
+		{ "value": "it", "flag": cookieScriptFlags.assetsPath + "img/flags/IT.svg", "language": "Italian" },
+		{ "value": "lv", "flag": cookieScriptFlags.assetsPath + "img/flags/LV.svg", "language": "Latvian" },
+		{ "value": "lt", "flag": cookieScriptFlags.assetsPath + "img/flags/LT.svg", "language": "Lithuanian" },
+		{ "value": "mt", "flag": cookieScriptFlags.assetsPath + "img/flags/MT.svg", "language": "Maltese" },
+		{ "value": "no", "flag": cookieScriptFlags.assetsPath + "img/flags/NO.svg", "language": "Norwegian" },
+		{ "value": "pl", "flag": cookieScriptFlags.assetsPath + "img/flags/PL.svg", "language": "Polish" },
+		{ "value": "pt", "flag": cookieScriptFlags.assetsPath + "img/flags/PT.svg", "language": "Portuguese" },
+		{ "value": "ro", "flag": cookieScriptFlags.assetsPath + "img/flags/RO.svg", "language": "Romanian" },
+		{ "value": "ru", "flag": cookieScriptFlags.assetsPath + "img/flags/RU.svg", "language": "Russian" },
+		{ "value": "sk", "flag": cookieScriptFlags.assetsPath + "img/flags/SK.svg", "language": "Slovak" },
+		{ "value": "sl", "flag": cookieScriptFlags.assetsPath + "img/flags/SL.svg", "language": "Slovenian" },
+		{ "value": "es", "flag": cookieScriptFlags.assetsPath + "img/flags/ES.svg", "language": "Spanish" },
+		{ "value": "sv", "flag": cookieScriptFlags.assetsPath + "img/flags/SV.svg", "language": "Swedish" },
+		{ "value": "th", "flag": cookieScriptFlags.assetsPath + "img/flags/TH.svg", "language": "Thai" },
+		{ "value": "tr", "flag": cookieScriptFlags.assetsPath + "img/flags/TR.svg", "language": "Turkish" },
+		{ "value": "uk", "flag": cookieScriptFlags.assetsPath + "img/flags/UK.svg", "language": "Ukrainian" },
+		{ "value": "vi", "flag": cookieScriptFlags.assetsPath + "img/flags/VI.svg", "language": "Vietnamese" },
 	]
 
 	for (let language of languages) {
@@ -305,7 +305,7 @@ jQuery(document).ready(function ( $ ) {
 		$("#cookie_script_select_language").append(option);
 	}
 
-	function formatCountry( language ) {
+	function formatCountry(language) {
 		if (!language.id) {
 			return language.text
 		}
@@ -315,7 +315,7 @@ jQuery(document).ready(function ( $ ) {
 		return $('<span class="lang-container"><img src="' + languageObj.flag + '" class="img-flag" width="20"  alt="Language"/> ' + languageObj.language + "</span>")
 	}
 
-	$("#cookie_script_select_language").val(lang.bannerLanguage);
+	$("#cookie_script_select_language").val(cookieScriptLang.bannerLanguage);
 
 	$("#cookie_script_select_language").select2({
 		placeholder: "Select language",
@@ -347,7 +347,7 @@ jQuery(document).ready(function ( $ ) {
 		}
 	});
 
-	$(window).on('load', function() {
+	$(window).on('load', function () {
 		if ($("#enable_google_consent_mode").is(":checked")) {
 			$("#top-gtm-save-button").hide();
 		} else {
@@ -461,19 +461,19 @@ jQuery(document).ready(function ( $ ) {
 
 	function showPanel(panelId) {
 		$('.tab-panel.active')
-				.removeClass('active');
+			.removeClass('active');
 		$('#' + panelId)
-				.addClass('active');
+			.addClass('active');
 	}
 
-	$('.tab-list button').on('click', function(e) {
+	$('.tab-list button').on('click', function (e) {
 		e.preventDefault();
 		const panelId = $(this).attr('aria-controls');
 
 		$('.tab-list button')
-				.attr('aria-selected', 'false');
+			.attr('aria-selected', 'false');
 		$(this)
-				.attr('aria-selected', 'true');
+			.attr('aria-selected', 'true');
 
 		showPanel(panelId);
 	});

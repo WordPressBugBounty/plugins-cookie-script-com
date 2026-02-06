@@ -1,12 +1,12 @@
 ﻿=== Cookie-Script.com ===
 Contributors: cookiescriptcom
 Tags: gdpr, cookie, compliance, cookiescript, consent
-Requires at least: 4.9
-Tested up to: 6.8.2
-Stable tag: 1.3.0
-Requires PHP: 7.0
-License: MIT License (Expat)
-License URI: https://tldrlegal.com/license/mit-license
+Requires at least: 5.6
+Tested up to: 6.9
+Stable tag: 1.4.3
+Requires PHP: 5.6
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Cookie-Script.com WordPress plugin.
 
@@ -18,6 +18,23 @@ You can use it right after installing, <strong>even without a CookieScript accou
 The plugin works with <strong>Google Consent Mode v2</strong> and the <strong>WP Consent API</strong>, and can <strong>block third-party cookies</strong> until a visitor gives permission. It keeps your site compliant without interfering with tools like Google Analytics or ads.
 
 More details are available at <a href="https://cookie-script.com/" target="_blank">cookie-script.com</a>.
+
+== External services ==
+
+This plugin utilizes Cookie-Script.com services to function.
+
+**1. Cookie-Script.com API**
+*   **Service:** Scans your website for cookies and retrieves configuration/status.
+*   **Data Sent:** Website URL, Privacy Policy URL, Language preference, and a unique scan identifier.
+*   **When:** During manual scan initiation via the plugin settings.
+*   **Privacy Policy:** https://cookie-script.com/legal/privacy-policy
+*   **Terms of Service:** https://cookie-script.com/legal/terms-and-conditions
+
+**2. Cookie-Script.com CDN**
+*   **Service:** Delivers the JavaScript file for the cookie banner (for "With Account" mode).
+*   **Data Sent:** Standard web request data (IP address, User Agent) when fetching the script.
+*   **When:** On every page load where the banner is active.
+*   **Privacy Policy:** https://cookie-script.com/legal/privacy-policy
 
 == Frequently Asked Questions ==
 <strong>What does this plugin actually do?</strong>
@@ -51,6 +68,10 @@ If you need a hand, you’ll find helpful articles, setup guides, and quick inst
 1. Cookie-Script.com plugin settings page
 
 == Changelog ==
+1.4.3 - Wordpress rules fixes. Tested on WordPress 6.9
+1.4.2 - Wordpress rules fixes. Tested on WordPress 6.9
+1.4.1 - Wordpress rules fixes. Tested on WordPress 6.9
+1.4.0 - Major security update. Tested on WordPress 6.8.3.
 1.3.0 - Tested on a WordPress 6.8.2 version. Works as intended.
 1.2.4 - Tested on a WordPress 6.8.2 version. Works as intended.
 1.2.3 - Tested on a WordPress 6.8.1 version. Works as intended.

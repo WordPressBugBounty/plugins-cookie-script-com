@@ -4,6 +4,7 @@ const WINDOW_MS  = 24 * 60 * 60 * 1000
 function safeGet(key) {
 	try { return localStorage.getItem(key) } catch { return null }
 }
+
 function safeSet(key, val) {
 	try { localStorage.setItem(key, val) } catch {}
 }
