@@ -1,3 +1,47 @@
+/*
+ * Inter font, bundled with the plugin (no external requests).
+ * SIL Open Font License 1.1, see ../fonts/OFL.txt
+ */
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("../fonts/Inter-Regular.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("../fonts/Inter-SemiBold.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("../fonts/Inter-Bold.woff") format("woff");
+}
+
+/* Use Inter for all text on the plugin's admin screens (dashicons are left untouched) */
+.CookieScript__home,
+.CookieScript__home *:not(.dashicons):not([class*="dashicons-"]),
+.CookieScriptWithAccount,
+.CookieScriptWithAccount *:not(.dashicons):not([class*="dashicons-"]),
+.CookieScriptWithoutAccount,
+.CookieScriptWithoutAccount *:not(.dashicons):not([class*="dashicons-"]),
+#flash-message-wrapper,
+#flash-message-wrapper *:not(.dashicons):not([class*="dashicons-"]),
+#TB_window,
+#TB_window *:not(.dashicons):not([class*="dashicons-"]),
+.select2-container,
+.select2-container *:not(.dashicons):not([class*="dashicons-"]) {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
 .CookieScript__adminForm input[type="submit"] {
     border-width: 1px;
     border-style: solid;
@@ -267,6 +311,17 @@ label[for="cookie_script_item_src"] {
     border-radius: 50%;
     width: 10px;
     height: 10px;
+}
+
+/* Source link field: centre the "?" icon vertically next to the input and keep a gap between them */
+.CookieScript__src-wrapper {
+    align-items: center;
+}
+
+.CookieScript__src-wrapper .CookieScript__help {
+    flex-shrink: 0;
+    margin: 0 0 0 12px;
+    line-height: 1;
 }
 
 .CookieScript__help:hover:before {
@@ -659,7 +714,7 @@ li::marker {
     border-radius: 10px;
     padding: 20px 30px;
     height: fit-content;
-    font-family: Inter;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 /*tabs start*/

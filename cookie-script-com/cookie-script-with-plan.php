@@ -83,6 +83,11 @@ class CookieScriptWithPlan extends CSWP_CookieScript_Utility
             $location = 'wp_head';
         }
 
+        // Only allow the hooks the settings page offers (protects against tampered stored values)
+        if (! in_array($location, array('wp_head', 'wp_footer', 'wp_body_open'), true)) {
+            $location = 'wp_head';
+        }
+
         return $location;
     }
 
@@ -92,7 +97,7 @@ class CookieScriptWithPlan extends CSWP_CookieScript_Utility
             'cookie_script_admin',
             plugin_dir_url(__FILE__) . 'assets/css/cookie_script_admin.css',
             array(),
-            '1.4.2'
+            CSWP_COOKIE_SCRIPT_VERSION
         );
     }
 
@@ -100,11 +105,7 @@ class CookieScriptWithPlan extends CSWP_CookieScript_Utility
     {
         $locationInElement = (string) $this->script_location_in_element;
 
-        if ('' === $locationInElement) {
-            $locationInElement = '1';
-        }
-
-        return $locationInElement;
+        return $this->sanitize_script_location_in_element($locationInElement);
     }
 
     public function cookie_script_register_settings()
@@ -245,11 +246,11 @@ class CookieScriptWithPlan extends CSWP_CookieScript_Utility
             : '';
 
         $cookie_script_location = isset($_POST['cookie_script_location'])
-            ? sanitize_text_field(wp_unslash($_POST['cookie_script_location']))
+            ? $this->sanitize_script_location(sanitize_text_field(wp_unslash($_POST['cookie_script_location'])))
             : 'wp_head';
 
         $cookie_script_location_in_element = isset($_POST['cookie_script_location_in_element'])
-            ? sanitize_text_field(wp_unslash($_POST['cookie_script_location_in_element']))
+            ? $this->sanitize_script_location_in_element(sanitize_text_field(wp_unslash($_POST['cookie_script_location_in_element'])))
             : '1';
 
         // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -325,7 +326,7 @@ class CookieScriptWithPlan extends CSWP_CookieScript_Utility
             return;
         }
 
-        $scriptRegexPattern = '/^https:\/\/(cdn|eu|ca|ca-eu|geo)\.cookie-script\.com\/s\/[0-9a-f]{32}\.js([\?\&](region|country|state)=[a-z\-]*)*$/i';
+        $scriptRegexPattern = '/^https:\/\/(cdn|eu|ca|ca-eu|geo)\.cookie-script\.com\/(s|staging)\/[0-9a-f]{32}\.js([\?\&](region|country|state)=[a-z\-]*)*$/i';
 
         if ('' !== $cookie_script_item_src && ! $this->string_validation($cookie_script_item_src, $scriptRegexPattern)) {
             $safe_src = esc_html($cookie_script_item_src);
@@ -351,12 +352,16 @@ class CookieScriptWithPlan extends CSWP_CookieScript_Utility
 
         $global_settings = array();
         if (isset($consent_settings['global']) && is_array($consent_settings['global'])) {
-            $global_settings = $consent_settings['global'];
+            $global_settings = $this->sanitize_consent_block($consent_settings['global']);
         }
 
         $regional_settings_to_save = null;
         if (! empty($regional_settings) && is_array($regional_settings)) {
-            $regional_settings_to_save = array_values($regional_settings);
+            $regional_settings_to_save = array();
+
+            foreach (array_values($regional_settings) as $region) {
+                $regional_settings_to_save[] = $this->sanitize_consent_block($region, true);
+            }
         }
 
         // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode

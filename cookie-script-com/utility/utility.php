@@ -54,8 +54,8 @@ class CSWP_CookieScript_Utility
             <div id="CookieScript" class="block-wrapper">
                 <div>
                     <a class='CookieScript__button-back CookieScript__back-button'
-                        href="<?php echo esc_html(admin_url("admin.php?page=cookie-script-com")) ?>">
-                        <img src="<?php echo esc_html($imageUrls['back-arrow.svg']) ?>" alt="Back">
+                        href="<?php echo esc_url(admin_url("admin.php?page=cookie-script-com")) ?>">
+                        <img src="<?php echo esc_url($imageUrls['back-arrow.svg']) ?>" alt="Back">
                         Back
                     </a>
                 </div>
@@ -134,7 +134,7 @@ class CSWP_CookieScript_Utility
                 </div>
                 <div class="CookieScript__adminForm--footer">
                     <button class="CookieScript__button-success" type="submit">
-                        <img src="<?php echo esc_html($imageUrls["save-icon.svg"]) ?>" alt="Save Icon">
+                        <img src="<?php echo esc_url($imageUrls["save-icon.svg"]) ?>" alt="Save Icon">
                         Save banner settings
                     </button>
                 </div>
@@ -198,10 +198,10 @@ class CSWP_CookieScript_Utility
                 </aside>
                 <div class="CookieScript__flowers">
                     <div class="CookieScript__flower">
-                        <img src="<?php echo esc_html($imageUrls["flower1.svg"]) ?>" class="flower-left" alt="Flower">
+                        <img src="<?php echo esc_url($imageUrls["flower1.svg"]) ?>" class="flower-left" alt="Flower">
                     </div>
                     <div class="CookieScript__flower">
-                        <img src="<?php echo esc_html($imageUrls["flower2.svg"]) ?>" class='flower-right' alt="Flower">
+                        <img src="<?php echo esc_url($imageUrls["flower2.svg"]) ?>" class='flower-right' alt="Flower">
                     </div>
                 </div>
             </div>
@@ -229,8 +229,8 @@ class CSWP_CookieScript_Utility
             <div id="CookieScript" class="block-wrapper">
                 <div>
                     <a class="CookieScript__button-back CookieScript__back-button"
-                        href="<?php echo esc_html(admin_url("admin.php?page=cookie-script-com")) ?>">
-                        <img src="<?php echo esc_html($imageUrls["back-arrow.svg"]) ?>" alt="Back">Back
+                        href="<?php echo esc_url(admin_url("admin.php?page=cookie-script-com")) ?>">
+                        <img src="<?php echo esc_url($imageUrls["back-arrow.svg"]) ?>" alt="Back">Back
                     </a>
                 </div>
                 <h3><?php esc_html_e("CookieScript Settings", "cookie-script-com"); ?></h3>
@@ -288,7 +288,7 @@ class CSWP_CookieScript_Utility
                     ?>
                         <div class="activation-banner-wrapper">
                             <h4 class="cookiescript__subtitle">
-                                <img src="<?php echo esc_html($imageUrls['banner-icon.svg']) ?>" alt="Back">
+                                <img src="<?php echo esc_url($imageUrls['banner-icon.svg']) ?>" alt="Back">
                                 <?php esc_html_e("Cookie banner", "cookie-script-com"); ?>
                             </h4>
                             <div class="CookieScript__banner-status">
@@ -379,10 +379,10 @@ class CSWP_CookieScript_Utility
                 </div>
                 <div class="CookieScript__flowers">
                     <div class="CookieScript__flower">
-                        <img src="<?php echo esc_html($imageUrls["flower1.svg"]) ?>" class="flower-left" alt="Flower">
+                        <img src="<?php echo esc_url($imageUrls["flower1.svg"]) ?>" class="flower-left" alt="Flower">
                     </div>
                     <div class="CookieScript__flower">
-                        <img src="<?php echo esc_html($imageUrls["flower2.svg"]) ?>" class="flower-right" alt="Flower">
+                        <img src="<?php echo esc_url($imageUrls["flower2.svg"]) ?>" class="flower-right" alt="Flower">
                     </div>
                 </div>
                 <div id="scan-modal" style="display:none;">
@@ -443,10 +443,10 @@ class CSWP_CookieScript_Utility
             </div>
             <div class="CookieScript__flowers">
                 <div class="CookieScript__flower">
-                    <img src="<?php echo esc_html($imageUrls["flower1.svg"]) ?>" alt="Flower">
+                    <img src="<?php echo esc_url($imageUrls["flower1.svg"]) ?>" alt="Flower">
                 </div>
                 <div class="CookieScript__flower">
-                    <img src="<?php echo esc_html($imageUrls["flower2.svg"]) ?>" alt="Flower">
+                    <img src="<?php echo esc_url($imageUrls["flower2.svg"]) ?>" alt="Flower">
                 </div>
             </div>
         </div>
@@ -527,7 +527,7 @@ class CSWP_CookieScript_Utility
                         <?php if ($displaySaveButton) { ?>
                             <button id="top-gtm-save-button" type="submit" name="submit"
                                 class="CookieScript__button-success">
-                                <img src="<?php echo esc_html($imageUrls["save-icon.svg"]) ?> " alt="Save Icon">
+                                <img src="<?php echo esc_url($imageUrls["save-icon.svg"]) ?> " alt="Save Icon">
                                 Save settings
                             </button>
                         <?php } ?>
@@ -570,12 +570,12 @@ class CSWP_CookieScript_Utility
                     <div class="panel-footer">
                         <button class="CookieScript__button-secondary" type="button" id="add-region"
                             onclick="addRegion()">
-                            <img src="<?php echo esc_html($imageUrls["add-icon.svg"]) ?>" alt="Add Icon">
+                            <img src="<?php echo esc_url($imageUrls["add-icon.svg"]) ?>" alt="Add Icon">
                             <?php esc_html_e('Add new region', 'cookie-script-com'); ?>
                         </button>
                         <?php if ($displaySaveButton) { ?>
                             <button type="submit" name="submit" class="CookieScript__button-success">
-                                <img src="<?php echo esc_html($imageUrls["save-icon.svg"]) ?>" alt="Save Icon">
+                                <img src="<?php echo esc_url($imageUrls["save-icon.svg"]) ?>" alt="Save Icon">
                                 Save settings
                             </button>
                         <?php } ?>
@@ -607,7 +607,7 @@ class CSWP_CookieScript_Utility
                 <h5><?php esc_html_e('Region: ', 'cookie-script-com'); ?><?php echo esc_html($region['region_code']); ?></h5>
                 <button class="CookieScript__button-remove" type="button"
                     onclick="removeRegion(this)">
-                    <img src="<?php echo esc_html($imageUrls["delete-icon.svg"]) ?>" alt="Delete Icon">
+                    <img src="<?php echo esc_url($imageUrls["delete-icon.svg"]) ?>" alt="Delete Icon">
                     <?php esc_html_e('DELETE REGION', 'cookie-script-com'); ?>
                 </button>
             </div>
@@ -668,6 +668,121 @@ class CSWP_CookieScript_Utility
         return false;
     }
 
+    // Google Consent Mode keys that only accept "granted" or "denied"
+    protected static $consentModeKeys = array(
+        'ad_storage',
+        'analytics_storage',
+        'ad_user_data',
+        'ad_personalization',
+        'functionality_storage',
+        'personalization_storage',
+        'security_storage',
+    );
+
+    /**
+     * Returns "granted" only for exactly "granted", otherwise "denied".
+     */
+    public function sanitize_consent_value($value)
+    {
+        return ('granted' === $value) ? 'granted' : 'denied';
+    }
+
+    /**
+     * Cleans one consent settings block (global or one region) before it is saved:
+     * consent values are limited to "granted"/"denied", wait_for_update to a positive integer,
+     * unknown keys are dropped. region_code is kept (already validated by the caller).
+     */
+    public function sanitize_consent_block($settings, $isRegion = false)
+    {
+        $settings = is_array($settings) ? $settings : array();
+        $clean    = array();
+
+        if ($isRegion) {
+            $clean['region_code'] = isset($settings['region_code']) ? sanitize_text_field($settings['region_code']) : '';
+        }
+
+        foreach (self::$consentModeKeys as $key) {
+            $clean[$key] = $this->sanitize_consent_value(isset($settings[$key]) ? $settings[$key] : 'denied');
+        }
+
+        $waitForUpdate            = isset($settings['wait_for_update']) && is_scalar($settings['wait_for_update']) ? absint($settings['wait_for_update']) : 0;
+        $clean['wait_for_update'] = (string) ($waitForUpdate > 0 ? $waitForUpdate : 500);
+
+        return $clean;
+    }
+
+    /**
+     * Only the hooks offered on the settings page may be used for the banner script.
+     */
+    public function sanitize_script_location($location)
+    {
+        return in_array($location, array('wp_head', 'wp_footer'), true) ? $location : 'wp_head';
+    }
+
+    /**
+     * Only the priorities offered on the settings page ("First" = 1, "Last" = 1000).
+     */
+    public function sanitize_script_location_in_element($locationInElement)
+    {
+        return in_array((string) $locationInElement, array('1', '1000'), true) ? (string) $locationInElement : '1';
+    }
+
+    /**
+     * Downloads the banner script from CookieScript's servers.
+     * Only https URLs on cookie-script.com (or its subdomains) are accepted, the request is made with
+     * wp_safe_remote_get() (no internal/private addresses) and only a 200 response with a body is accepted.
+     * Returns the script contents, or false on failure.
+     */
+    public function cookie_script_fetch_remote_script($url)
+    {
+        if (! is_string($url) || '' === $url) {
+            return false;
+        }
+
+        if (0 === strpos($url, '//')) {
+            $url = 'https:' . $url;
+        }
+
+        $parts = wp_parse_url($url);
+
+        if (empty($parts['scheme']) || empty($parts['host']) || ! in_array(strtolower($parts['scheme']), array('http', 'https'), true)) {
+            return false;
+        }
+
+        if (! empty($parts['port']) || ! empty($parts['user']) || ! empty($parts['pass'])) {
+            return false;
+        }
+
+        $host = strtolower($parts['host']);
+
+        if ('cookie-script.com' !== $host && '.cookie-script.com' !== substr($host, -strlen('.cookie-script.com'))) {
+            return false;
+        }
+
+        // Always download over https
+        $url = preg_replace('#^http://#i', 'https://', $url);
+
+        $response = wp_safe_remote_get($url, array('timeout' => 30));
+
+        if (is_wp_error($response) || 200 !== (int) wp_remote_retrieve_response_code($response)) {
+            return false;
+        }
+
+        $body = wp_remote_retrieve_body($response);
+
+        return ('' !== trim((string) $body)) ? $body : false;
+    }
+
+    /**
+     * Makes JavaScript safe to print inside an inline <script> element:
+     * a "</script" sequence would otherwise end the element early and let the rest be parsed as HTML.
+     * "<\/script" means exactly the same thing to JavaScript.
+     */
+    public function escape_inline_script($js)
+    {
+        return preg_replace('#</(script)#i', '<\\/$1', (string) $js);
+    }
+
     public function display_google_consent_script_front($consentModeSettings)
     {
 
@@ -690,13 +805,13 @@ class CSWP_CookieScript_Utility
                 $regions = array_map('trim', explode(',', sanitize_text_field($region['region_code'])));
 
                 $data = [
-                    'ad_storage' => sanitize_text_field($region['ad_storage'] ?? 'denied'),
-                    'analytics_storage' => sanitize_text_field($region['analytics_storage'] ?? 'denied'),
-                    'ad_user_data' => sanitize_text_field($region['ad_user_data'] ?? 'denied'),
-                    'ad_personalization' => sanitize_text_field($region['ad_personalization'] ?? 'denied'),
-                    'functionality_storage' => sanitize_text_field($region['functionality_storage'] ?? 'denied'),
-                    'personalization_storage' => sanitize_text_field($region['personalization_storage'] ?? 'denied'),
-                    'security_storage' => sanitize_text_field($region['security_storage'] ?? 'denied'),
+                    'ad_storage' => $this->sanitize_consent_value($region['ad_storage'] ?? 'denied'),
+                    'analytics_storage' => $this->sanitize_consent_value($region['analytics_storage'] ?? 'denied'),
+                    'ad_user_data' => $this->sanitize_consent_value($region['ad_user_data'] ?? 'denied'),
+                    'ad_personalization' => $this->sanitize_consent_value($region['ad_personalization'] ?? 'denied'),
+                    'functionality_storage' => $this->sanitize_consent_value($region['functionality_storage'] ?? 'denied'),
+                    'personalization_storage' => $this->sanitize_consent_value($region['personalization_storage'] ?? 'denied'),
+                    'security_storage' => $this->sanitize_consent_value($region['security_storage'] ?? 'denied'),
                     'wait_for_update' => absint($region['wait_for_update'] ?? 500),
                     'region' => $regions,
                 ];
@@ -710,13 +825,13 @@ class CSWP_CookieScript_Utility
             $g = $consentModeSettings['global'];
 
             $data = [
-                'ad_storage' => sanitize_text_field($g['ad_storage'] ?? 'denied'),
-                'analytics_storage' => sanitize_text_field($g['analytics_storage'] ?? 'denied'),
-                'ad_user_data' => sanitize_text_field($g['ad_user_data'] ?? 'denied'),
-                'ad_personalization' => sanitize_text_field($g['ad_personalization'] ?? 'denied'),
-                'functionality_storage' => sanitize_text_field($g['functionality_storage'] ?? 'denied'),
-                'personalization_storage' => sanitize_text_field($g['personalization_storage'] ?? 'denied'),
-                'security_storage' => sanitize_text_field($g['security_storage'] ?? 'denied'),
+                'ad_storage' => $this->sanitize_consent_value($g['ad_storage'] ?? 'denied'),
+                'analytics_storage' => $this->sanitize_consent_value($g['analytics_storage'] ?? 'denied'),
+                'ad_user_data' => $this->sanitize_consent_value($g['ad_user_data'] ?? 'denied'),
+                'ad_personalization' => $this->sanitize_consent_value($g['ad_personalization'] ?? 'denied'),
+                'functionality_storage' => $this->sanitize_consent_value($g['functionality_storage'] ?? 'denied'),
+                'personalization_storage' => $this->sanitize_consent_value($g['personalization_storage'] ?? 'denied'),
+                'security_storage' => $this->sanitize_consent_value($g['security_storage'] ?? 'denied'),
                 'wait_for_update' => absint($g['wait_for_update'] ?? 500),
             ];
 

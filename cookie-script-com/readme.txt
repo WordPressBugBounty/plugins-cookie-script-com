@@ -1,10 +1,10 @@
 ﻿=== Cookie-Script.com ===
 Contributors: cookiescriptcom
 Tags: gdpr, cookie, compliance, cookiescript, consent
-Requires at least: 5.6
+Requires at least: 5.7
 Tested up to: 6.9
-Stable tag: 1.4.3
-Requires PHP: 5.6
+Stable tag: 1.4.4
+Requires PHP: 7.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,6 +68,7 @@ If you need a hand, you’ll find helpful articles, setup guides, and quick inst
 1. Cookie-Script.com plugin settings page
 
 == Changelog ==
+1.4.4 - Security hardening. Source link now also accepts /staging/ URLs. Requires PHP 7.0 and WordPress 5.7.
 1.4.3 - Wordpress rules fixes. Tested on WordPress 6.9
 1.4.2 - Wordpress rules fixes. Tested on WordPress 6.9
 1.4.1 - Wordpress rules fixes. Tested on WordPress 6.9

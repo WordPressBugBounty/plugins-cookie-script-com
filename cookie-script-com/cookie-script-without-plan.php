@@ -60,7 +60,7 @@ class CookieScriptWithoutPlan extends CSWP_CookieScript_Utility
             'cookie_script_admin',
             plugin_dir_url(__FILE__) . 'assets/css/cookie_script_admin.css',
             array(),
-            '1.4.1'
+            CSWP_COOKIE_SCRIPT_VERSION
         );
     }
 
@@ -74,7 +74,7 @@ class CookieScriptWithoutPlan extends CSWP_CookieScript_Utility
                 'helpers',
                 plugins_url('assets/js/helpers.js', __FILE__),
                 array(),
-                '1.4.1',
+                CSWP_COOKIE_SCRIPT_VERSION,
                 true
             );
 
@@ -82,7 +82,7 @@ class CookieScriptWithoutPlan extends CSWP_CookieScript_Utility
                 'cookie_script_admin',
                 plugin_dir_url(__FILE__) . 'assets/js/cookie_script_admin.js',
                 array('helpers'),
-                '1.4.1',
+                CSWP_COOKIE_SCRIPT_VERSION,
                 true
             );
 
@@ -148,14 +148,10 @@ class CookieScriptWithoutPlan extends CSWP_CookieScript_Utility
             }
 
             if (!empty($url)) {
-                $response = wp_remote_get($url);
+                $body = $this->cookie_script_fetch_remote_script($url);
 
-                if (! is_wp_error($response)) {
-                    $body = wp_remote_retrieve_body($response);
-
-                    if (! empty($body)) {
-                        $this->cookie_script_save_script_to_db($body);
-                    }
+                if (false !== $body) {
+                    $this->cookie_script_save_script_to_db($body);
 
                     wp_send_json('finish');
                 }
@@ -178,7 +174,8 @@ class CookieScriptWithoutPlan extends CSWP_CookieScript_Utility
 
     public function cookie_script_options_page()
     {
-        $newSecretKey = md5(time() . uniqid() . get_site_url());
+        // Random 32 character hex id (same format as before, but not predictable)
+        $newSecretKey = bin2hex(random_bytes(16));
         $is_post = (isset($_SERVER['REQUEST_METHOD']) && 'POST' === $_SERVER['REQUEST_METHOD']);
 
         if ($is_post && isset($_POST['cs_without_plan_setting-insert'])) {
@@ -344,15 +341,13 @@ class CookieScriptWithoutPlan extends CSWP_CookieScript_Utility
         }
 
         if (is_array($data) && ! empty($data['script_url'])) {
-            $response = wp_remote_get($data['script_url']);
+            $body = $this->cookie_script_fetch_remote_script($data['script_url']);
 
-            if (! is_wp_error($response)) {
-                $body = wp_remote_retrieve_body($response);
-                if (! empty($body)) {
-                    $this->cookie_script_save_script_to_db($body);
-                }
+            if (false !== $body) {
+                $this->cookie_script_save_script_to_db($body);
             }
 
+            // Same response shape as before (the API response info)
             wp_send_json($response['response']);
         }
 
@@ -547,7 +542,7 @@ class CookieScriptWithoutPlan extends CSWP_CookieScript_Utility
                     '<script id="%1$s" type="text/javascript" data-cs-platform="%2$s">%3$s</script>',
                     esc_attr('cookie_script-js-without'),
                     esc_attr('wordpress'),
-                    $script
+                    $this->escape_inline_script($script) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JavaScript from CookieScript, "</script" neutralised
                 );
             }
         }
@@ -679,10 +674,16 @@ class CookieScriptWithoutPlan extends CSWP_CookieScript_Utility
 
             update_option('cookie_script_google_consent_mode_enabled', $enable_google_consent_mode, true);
 
-            $globalSettings   = (isset($consent_settings['global']) && is_array($consent_settings['global'])) ? $consent_settings['global'] : array();
-            $regionalSettings = (isset($consent_settings['regional']) && is_array($consent_settings['regional']) && ! empty($consent_settings['regional']))
-                ? array_values($consent_settings['regional'])
-                : null;
+            $globalSettings   = (isset($consent_settings['global']) && is_array($consent_settings['global'])) ? $this->sanitize_consent_block($consent_settings['global']) : array();
+            $regionalSettings = null;
+
+            if (isset($consent_settings['regional']) && is_array($consent_settings['regional']) && ! empty($consent_settings['regional'])) {
+                $regionalSettings = array();
+
+                foreach (array_values($consent_settings['regional']) as $region) {
+                    $regionalSettings[] = $this->sanitize_consent_block($region, true);
+                }
+            }
 
             update_option(
                 'cookie_script_google_consent_mode_settings',

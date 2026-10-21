@@ -4,13 +4,14 @@
  * 🍪
  * Plugin Name:       Cookie-Script.com
  * Description:       Cookie-Script.com WordPress plugin.
- * Version:           1.4.3
+ * Version:           1.4.4
  * Author:            Cookie-Script.com
  * Author URI:        https://cookie-script.com/
  * Text Domain:       cookie-script-com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Requires at least: 5.6
+ * Requires at least: 5.7
+ * Requires PHP:      7.0
  * Tested up to:      6.9
  */
 
@@ -22,6 +23,12 @@
 // Block direct access
 if (! defined('ABSPATH')) {
     exit;
+}
+
+// Plugin version, also used as the cache-busting version of the plugin's CSS/JS files.
+// Keep in sync with "Version:" above and "Stable tag:" in readme.txt.
+if (! defined('CSWP_COOKIE_SCRIPT_VERSION')) {
+    define('CSWP_COOKIE_SCRIPT_VERSION', '1.4.4');
 }
 
 require_once plugin_dir_path(__FILE__) . "cookie-script-with-plan.php";
@@ -66,7 +73,7 @@ if (!class_exists("CookieScriptIndex")) {
                 'cookie_script_api',
                 plugin_dir_url(__FILE__) . 'assets/js/cookie_script_api.js',
                 array('wp-consent-api'),
-                '1.4.1',
+                CSWP_COOKIE_SCRIPT_VERSION,
                 true
             );
 
@@ -123,7 +130,7 @@ if (!class_exists("CookieScriptIndex")) {
                 "cookie_script_admin",
                 plugin_dir_url(__FILE__) . "assets/css/cookie_script_admin.css",
                 array(),
-                '1.4.1'
+                CSWP_COOKIE_SCRIPT_VERSION
             );
         }
 

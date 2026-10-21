@@ -1,5 +1,10 @@
 <?php
 
+// Block direct access
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 class CookieScriptWpca
 {
     function __construct()
@@ -68,7 +73,7 @@ class CookieScriptWpca
             echo '
         <div class="panel-footer">
             <button type="submit" name="submit" class="CookieScript__button-success">
-                <img src="' . esc_html($imageUrls["save-icon.svg"]) . '" alt="Save Icon">
+                <img src="' . esc_url($imageUrls["save-icon.svg"]) . '" alt="Save Icon">
                 Save settings
             </button>
         </div>';

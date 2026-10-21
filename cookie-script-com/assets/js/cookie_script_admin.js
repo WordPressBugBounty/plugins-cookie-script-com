@@ -364,7 +364,8 @@ jQuery(document).ready(function ($) {
             <div class="region-settings">
                 <h5>New region</h5>
                 <button class="CookieScript__button-remove" type="button" onclick="removeRegion(this)">
-                    DELETE REGION                
+                    <img src="${cookieScriptFlags.assetsPath}img/delete-icon.svg" alt="Delete Icon">
+                    DELETE REGION
                 </button>
             </div>
             <div class="gcm-setting form-wrapper">
